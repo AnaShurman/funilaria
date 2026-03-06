@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from '../supabase.service';
 import { Database } from '../database.types';
 
-export type Cliente = Database['public']['Tables']['clientes']['Row'];
-export type ClienteInsert = Database['public']['Tables']['clientes']['Insert'];
-export type ClienteUpdate = Database['public']['Tables']['clientes']['Update'];
+export type Cliente = Database['public']['Tables']['Cliente']['Row'];
+export type ClienteInsert = Database['public']['Tables']['Cliente']['Insert'];
+export type ClienteUpdate = Database['public']['Tables']['Cliente']['Update'];
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class ClientesService {
   async createCliente(cliente: ClienteInsert): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
-        .from('clientes')
+        .from('Cliente')
         .insert(cliente)
         .select()
         .single();
@@ -31,9 +31,9 @@ export class ClientesService {
   async getClienteByTelefone(telefone: string): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
-        .from('clientes')
+        .from('Cliente')
         .select('*')
-        .eq('telefone', telefone)
+        .eq('cliente_telefone', telefone)
         .single();
 
       if (error && error.code !== 'PGRST116') throw error; // PGRST116 = not found
@@ -47,7 +47,7 @@ export class ClientesService {
   async getClienteById(id: number): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
-        .from('clientes')
+        .from('Cliente')
         .select('*')
         .eq('id', id)
         .single();
@@ -63,7 +63,7 @@ export class ClientesService {
   async updateCliente(id: number, cliente: ClienteUpdate): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
-        .from('clientes')
+        .from('Cliente')
         .update(cliente)
         .eq('id', id)
         .select()
@@ -80,10 +80,10 @@ export class ClientesService {
   async searchClientes(searchTerm: string): Promise<Cliente[]> {
     try {
       const { data, error } = await this.supabase.client
-        .from('clientes')
+        .from('Cliente')
         .select('*')
-        .or(`nome.ilike.%${searchTerm}%,telefone.ilike.%${searchTerm}%`)
-        .order('nome');
+        .or(`cliente_nome.ilike.%${searchTerm}%,cliente_telefone.ilike.%${searchTerm}%`)
+        .order('cliente_nome');
 
       if (error) throw error;
       return data || [];

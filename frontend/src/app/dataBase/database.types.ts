@@ -9,11 +9,11 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      clientes: {
+      Cliente: {
         Row: {
           id: number
           created_at: string | null
-          cliente_nome: string
+          cliente_nome: string | null
           cliente_telefone: string | null
           cliente_email: string | null
           cliente_cpf: string | null
@@ -21,7 +21,7 @@ export interface Database {
         Insert: {
           id?: number
           created_at?: string | null
-          cliente_nome: string
+          cliente_nome?: string | null
           cliente_telefone?: string | null
           cliente_email?: string | null
           cliente_cpf?: string | null
@@ -29,7 +29,7 @@ export interface Database {
         Update: {
           id?: number
           created_at?: string | null
-          cliente_nome?: string
+          cliente_nome?: string | null
           cliente_telefone?: string | null
           cliente_email?: string | null
           cliente_cpf?: string | null
@@ -72,7 +72,7 @@ export interface Database {
             foreignKeyName: "veiculos_cliente_id_fkey"
             columns: ["cliente_id"]
             isOneToOne: false
-            referencedRelation: "clientes"
+            referencedRelation: "Cliente"
             referencedColumns: ["id"]
           }
         ]
@@ -140,7 +140,7 @@ export interface Database {
             foreignKeyName: "orcamentos_cliente_id_fkey"
             columns: ["cliente_id"]
             isOneToOne: false
-            referencedRelation: "clientes"
+            referencedRelation: "Cliente"
             referencedColumns: ["id"]
           },
           {
