@@ -9,38 +9,166 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      clientes: {
+        Row: {
+          id: string
+          nome: string
+          email: string | null
+          telefone: string | null
+          cpf: string | null
+          endereco: string | null
+          cidade: string | null
+          estado: string | null
+          cep: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          nome: string
+          email?: string | null
+          telefone?: string | null
+          cpf?: string | null
+          endereco?: string | null
+          cidade?: string | null
+          estado?: string | null
+          cep?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          nome?: string
+          email?: string | null
+          telefone?: string | null
+          cpf?: string | null
+          endereco?: string | null
+          cidade?: string | null
+          estado?: string | null
+          cep?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      veiculos: {
+        Row: {
+          id: string
+          cliente_id: string | null
+          modelo: string
+          placa: string
+          ano: string | null
+          cor: string | null
+          marca: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          cliente_id?: string | null
+          modelo: string
+          placa: string
+          ano?: string | null
+          cor?: string | null
+          marca?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          cliente_id?: string | null
+          modelo?: string
+          placa?: string
+          ano?: string | null
+          cor?: string | null
+          marca?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "veiculos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       orcamentos: {
         Row: {
           id: string
+          cliente_id: string | null
+          veiculo_id: string | null
           cliente_nome: string
-          telefone: string | null
-          veiculo: string | null
-          placa: string | null
+          cliente_email: string | null
+          cliente_telefone: string | null
+          veiculo_modelo: string | null
+          veiculo_placa: string | null
+          veiculo_ano: string | null
           status: string | null
           observacoes: string | null
+          mao_de_obra: number | null
+          total_materiais: number | null
+          total_servicos: number | null
+          valor_total: number | null
+          numero_orcamento: string | null
           created_at: string | null
         }
         Insert: {
           id?: string
+          cliente_id?: string | null
+          veiculo_id?: string | null
           cliente_nome: string
-          telefone?: string | null
-          veiculo?: string | null
-          placa?: string | null
+          cliente_email?: string | null
+          cliente_telefone?: string | null
+          veiculo_modelo?: string | null
+          veiculo_placa?: string | null
+          veiculo_ano?: string | null
           status?: string | null
           observacoes?: string | null
+          mao_de_obra?: number | null
+          total_materiais?: number | null
+          total_servicos?: number | null
+          valor_total?: number | null
+          numero_orcamento?: string | null
           created_at?: string | null
         }
         Update: {
           id?: string
+          cliente_id?: string | null
+          veiculo_id?: string | null
           cliente_nome?: string
-          telefone?: string | null
-          veiculo?: string | null
-          placa?: string | null
+          cliente_email?: string | null
+          cliente_telefone?: string | null
+          veiculo_modelo?: string | null
+          veiculo_placa?: string | null
+          veiculo_ano?: string | null
           status?: string | null
           observacoes?: string | null
+          mao_de_obra?: number | null
+          total_materiais?: number | null
+          total_servicos?: number | null
+          valor_total?: number | null
+          numero_orcamento?: string | null
           created_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "orcamentos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orcamentos_veiculo_id_fkey"
+            columns: ["veiculo_id"]
+            isOneToOne: false
+            referencedRelation: "veiculos"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       orcamento_servicos: {
         Row: {
@@ -76,6 +204,7 @@ export interface Database {
           id: string
           orcamento_id: string | null
           nome: string
+          descricao: string | null
           quantidade: number | null
           valor_unitario: number | null
           created_at: string | null
@@ -84,6 +213,7 @@ export interface Database {
           id?: string
           orcamento_id?: string | null
           nome: string
+          descricao?: string | null
           quantidade?: number | null
           valor_unitario?: number | null
           created_at?: string | null
@@ -92,6 +222,7 @@ export interface Database {
           id?: string
           orcamento_id?: string | null
           nome?: string
+          descricao?: string | null
           quantidade?: number | null
           valor_unitario?: number | null
           created_at?: string | null
@@ -164,4 +295,4 @@ export interface Database {
   }
 }
 
-
+// Made with Bob

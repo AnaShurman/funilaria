@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../supabase.service';
+import { ClientesService, ClienteInsert } from '../clientes/clientes.service';
+import { VeiculosService, VeiculoInsert } from '../veiculos/veiculos.service';
 
 export interface OrcamentoData {
   clienteNome: string;
@@ -30,17 +32,50 @@ export interface OrcamentoData {
 })
 export class OrcamentoService {
 
-  constructor(private supabase: SupabaseService) { }
+  constructor(
+    private supabase: SupabaseService,
+    private clientesService: ClientesService,
+    private veiculosService: VeiculosService
+  ) { }
 
   /**
    * Save a new budget to the database
    */
   async salvarOrcamento(dados: OrcamentoData): Promise<any> {
     try {
-      // 1. Insert main budget record
+      // 1. Check if cliente exists or create new one
+      let cliente = await this.clientesService.getClienteByTelefone(dados.clienteTelefone);
+      
+      if (!cliente) {
+        // Create new cliente
+        const novoCliente: ClienteInsert = {
+          nome: dados.clienteNome,
+          telefone: dados.clienteTelefone,
+          email: dados.clienteEmail || null
+        };
+        cliente = await this.clientesService.createCliente(novoCliente);
+      }
+
+      // 2. Check if veiculo exists or create new one
+      let veiculo = await this.veiculosService.getVeiculoByPlaca(dados.veiculoPlaca);
+      
+      if (!veiculo && cliente) {
+        // Create new veiculo
+        const novoVeiculo: VeiculoInsert = {
+          cliente_id: cliente.id,
+          modelo: dados.veiculoModelo,
+          placa: dados.veiculoPlaca,
+          ano: dados.veiculoAno
+        };
+        veiculo = await this.veiculosService.createVeiculo(novoVeiculo);
+      }
+
+      // 3. Insert main budget record
       const { data: orcamento, error: orcamentoError } = await this.supabase.client
         .from('orcamentos')
         .insert({
+          cliente_id: cliente?.id || null,
+          veiculo_id: veiculo?.id || null,
           cliente_nome: dados.clienteNome,
           cliente_telefone: dados.clienteTelefone,
           cliente_email: dados.clienteEmail || null,
@@ -60,7 +95,7 @@ export class OrcamentoService {
 
       if (orcamentoError) throw orcamentoError;
 
-      // 2. Insert materials
+      // 4. Insert materials
       if (dados.materiais && dados.materiais.length > 0) {
         const materiais = dados.materiais.map(material => ({
           orcamento_id: orcamento.id,
@@ -76,7 +111,7 @@ export class OrcamentoService {
         if (materiaisError) throw materiaisError;
       }
 
-      // 3. Insert services
+      // 5. Insert services
       if (dados.servicos && dados.servicos.length > 0) {
         const servicos = dados.servicos.map(servico => ({
           orcamento_id: orcamento.id,
