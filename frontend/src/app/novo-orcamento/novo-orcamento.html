@@ -275,18 +275,20 @@
 
       <!-- Botões -->
       <div class="form-actions">
-        <p-button 
-          label="Cancelar" 
-          icon="pi pi-times" 
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
           severity="secondary"
           type="button"
+          [disabled]="isLoading"
           (onClick)="onCancel()">
         </p-button>
-        <p-button 
-          label="Gerar Orçamento PDF" 
-          icon="pi pi-file-pdf" 
+        <p-button
+          [label]="isLoading ? 'Processando...' : 'Gerar Orçamento PDF'"
+          [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-pdf'"
           type="submit"
-          [disabled]="orcamentoForm.invalid">
+          [loading]="isLoading"
+          [disabled]="orcamentoForm.invalid || isLoading">
         </p-button>
       </div>
     </form>

@@ -9,6 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { OrcamentoService } from '../dataBase/orcamento/orcamento.service';
+import { PdfService } from '../services/pdf.service';
+import { PerfilService } from '../dataBase/perfil/perfil-service';
 
 @Component({
   selector: 'app-home',
@@ -40,15 +42,32 @@ export class Home implements OnInit {
   valorMesAnterior: number = 0;
   crescimentoOrcamentos: number = 0;
   crescimentoValor: number = 0;
+  
+  logoUrl: string | null = null;
+  oficinaInfo: any = null;
 
   constructor(
     private orcamentoService: OrcamentoService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private pdfService: PdfService,
+    private perfilService: PerfilService
   ) {}
 
   async ngOnInit() {
+    await this.loadOficinaInfo();
     await this.carregarOrcamentos();
+  }
+  
+  async loadOficinaInfo(): Promise<void> {
+    try {
+      this.oficinaInfo = await this.perfilService.getOficinaInfo();
+      if (this.oficinaInfo?.logo_path) {
+        this.logoUrl = this.perfilService.getImageUrl(this.oficinaInfo.logo_path);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar informações da oficina:', error);
+    }
   }
 
   async carregarOrcamentos() {
@@ -167,12 +186,57 @@ export class Home implements OnInit {
   }
 
   async visualizarOrcamento(orcamento: any) {
-    // TODO: Implementar visualização detalhada
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Em desenvolvimento',
-      detail: `Visualizar orçamento ${orcamento.numero_orcamento}`
-    });
+    try {
+      console.log('📄 Carregando detalhes do orçamento:', orcamento.id);
+      
+      // Buscar detalhes completos do orçamento (com materiais e serviços)
+      const orcamentoCompleto = await this.orcamentoService.obterOrcamento(orcamento.id);
+      
+      console.log('📋 Orçamento completo:', orcamentoCompleto);
+      
+      // Preparar dados para o PDF
+      const dadosPDF = {
+        numeroOrcamento: orcamentoCompleto.numero_orcamento,
+        clienteNome: orcamentoCompleto.cliente_nome,
+        clienteTelefone: orcamentoCompleto.cliente_telefone,
+        clienteEmail: orcamentoCompleto.cliente_email,
+        veiculoModelo: orcamentoCompleto.veiculo_modelo,
+        veiculoPlaca: orcamentoCompleto.veiculo_placa,
+        veiculoAno: orcamentoCompleto.veiculo_ano,
+        materiais: orcamentoCompleto.materiais || [],
+        servicos: orcamentoCompleto.servicos || [],
+        maoDeObra: orcamentoCompleto.mao_de_obra,
+        observacoes: orcamentoCompleto.observacoes,
+        totalMateriais: orcamentoCompleto.total_materiais,
+        totalServicos: orcamentoCompleto.total_servicos,
+        valorTotal: orcamentoCompleto.valor_total
+      };
+      
+      console.log('📄 Gerando PDF...');
+      
+      // Gerar PDF apenas para visualização (sem imprimir)
+      await this.pdfService.gerarOrcamentoPDF(
+        dadosPDF,
+        this.logoUrl || undefined,
+        this.oficinaInfo,
+        true  // apenasVisualizar = true
+      );
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Sucesso',
+        detail: `PDF do orçamento ${orcamento.numero_orcamento} gerado!`,
+        life: 3000
+      });
+    } catch (error) {
+      console.error('❌ Erro ao visualizar orçamento:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível gerar o PDF do orçamento',
+        life: 5000
+      });
+    }
   }
 
   async deletarOrcamento(id: string) {

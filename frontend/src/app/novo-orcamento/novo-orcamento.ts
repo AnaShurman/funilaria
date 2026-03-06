@@ -31,6 +31,7 @@ export class NovoOrcamento implements OnInit {
   orcamentoForm!: FormGroup;
   logoUrl: string | null = null;
   oficinaInfo: any = null;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -144,7 +145,10 @@ export class NovoOrcamento implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.orcamentoForm.valid) {
+      this.isLoading = true;
       try {
+        console.log('🚀 Iniciando salvamento do orçamento...');
+        
         const dadosOrcamento = {
           ...this.orcamentoForm.value,
           totalMateriais: this.calcularTotalMateriais(),
@@ -152,23 +156,30 @@ export class NovoOrcamento implements OnInit {
           valorTotal: this.calcularTotal()
         };
 
+        console.log('📝 Dados do orçamento preparados:', dadosOrcamento);
+
         // Save to database first
+        console.log('💾 Salvando no banco de dados...');
         const orcamentoSalvo = await this.orcamentoService.salvarOrcamento(dadosOrcamento);
+        console.log('✅ Orçamento salvo no banco:', orcamentoSalvo);
         
         // Add the generated budget number to the data
         dadosOrcamento.numeroOrcamento = orcamentoSalvo.numero_orcamento;
 
         // Generate PDF with workshop data
+        console.log('📄 Gerando PDF...');
         await this.pdfService.gerarOrcamentoPDF(
           dadosOrcamento,
           this.logoUrl || undefined,
           this.oficinaInfo
         );
+        console.log('✅ PDF gerado com sucesso!');
 
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: `Orçamento ${orcamentoSalvo.numero_orcamento} salvo e PDF gerado com sucesso!`
+          detail: `Orçamento ${orcamentoSalvo.numero_orcamento} salvo e PDF gerado com sucesso!`,
+          life: 3000
         });
 
         // Clear form after success
@@ -177,13 +188,28 @@ export class NovoOrcamento implements OnInit {
         this.servicos.clear();
         this.addMaterial();
         this.addServico();
-      } catch (error) {
-        console.error('Erro ao processar orçamento:', error);
+      } catch (error: any) {
+        console.error('❌ Erro ao processar orçamento:', error);
+        
+        let errorMessage = 'Não foi possível salvar o orçamento.';
+        
+        if (error?.message) {
+          errorMessage += ` Detalhes: ${error.message}`;
+        }
+        
+        if (error?.code === '42501') {
+          errorMessage = 'Erro de permissão no banco de dados. Verifique as políticas RLS no Supabase.';
+        }
+        
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível salvar o orçamento. Verifique sua conexão.'
+          detail: errorMessage,
+          life: 5000
         });
+      } finally {
+        this.isLoading = false;
+        console.log('🏁 Processo finalizado');
       }
     } else {
       this.messageService.add({

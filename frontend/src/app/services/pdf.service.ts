@@ -7,24 +7,31 @@ export class PdfService {
 
   constructor() { }
 
-  async gerarOrcamentoPDF(dados: any, logoUrl?: string, oficinaInfo?: any): Promise<void> {
+  async gerarOrcamentoPDF(dados: any, logoUrl?: string, oficinaInfo?: any, apenasVisualizar: boolean = false): Promise<void> {
     // Criar um elemento HTML temporário para o conteúdo do PDF
     const conteudo = this.criarConteudoHTML(dados, logoUrl, oficinaInfo);
     
-    // Criar uma nova janela para impressão
+    // Criar uma nova janela para impressão/visualização
     const printWindow = window.open('', '_blank');
     
     if (printWindow) {
       printWindow.document.write(conteudo);
       printWindow.document.close();
       
-      // Aguardar o carregamento das imagens antes de imprimir
-      printWindow.onload = () => {
+      // Se não for apenas visualizar, aguardar e imprimir
+      if (!apenasVisualizar) {
+        // Aguardar o carregamento das imagens antes de imprimir
+        // Usar setTimeout para não bloquear a thread principal
         setTimeout(() => {
-          printWindow.print();
-        }, 250);
-      };
+          if (printWindow && !printWindow.closed) {
+            printWindow.print();
+          }
+        }, 500);
+      }
     }
+    
+    // Retornar imediatamente sem esperar o fechamento da janela
+    return Promise.resolve();
   }
 
   private criarConteudoHTML(dados: any, logoUrl?: string, oficinaInfo?: any): string {
