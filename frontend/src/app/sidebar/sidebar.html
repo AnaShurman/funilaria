@@ -1,18 +1,31 @@
-<aside class="sidebar">
+<!-- Botão hamburguer para mobile -->
+<button class="menu-toggle" (click)="toggleMenu()" [class.open]="isMenuOpen">
+  <i class="pi pi-bars"></i>
+</button>
+
+<!-- Overlay para fechar o menu ao clicar fora -->
+<div class="sidebar-overlay" *ngIf="isMenuOpen" (click)="closeMenu()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" [class.open]="isMenuOpen">
   <div class="sidebar-header">
     <div class="logo">
       <i class="pi pi-car"></i>
       <span class="logo-text">Funilaria</span>
     </div>
+    <button class="close-btn" (click)="closeMenu()">
+      <i class="pi pi-times"></i>
+    </button>
   </div>
 
   <nav class="sidebar-nav">
-    <a 
-      *ngFor="let item of menuItems" 
+    <a
+      *ngFor="let item of menuItems"
       [routerLink]="item.route"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"
-      class="nav-item">
+      class="nav-item"
+      (click)="closeMenu()">
       <i [class]="item.icon"></i>
       <span>{{ item.label }}</span>
     </a>

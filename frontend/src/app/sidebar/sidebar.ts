@@ -10,6 +10,8 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./sidebar.scss'],
 })
 export class Sidebar {
+  isMenuOpen = false;
+
   menuItems = [
     {
       label: 'Dashboard',
@@ -32,6 +34,14 @@ export class Sidebar {
 
   isActive(route: string): boolean {
     return this.router.url === route;
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 }
 
