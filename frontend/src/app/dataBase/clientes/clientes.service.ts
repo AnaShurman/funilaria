@@ -44,7 +44,7 @@ export class ClientesService {
     }
   }
 
-  async getClienteById(id: string): Promise<Cliente | null> {
+  async getClienteById(id: number): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
         .from('clientes')
@@ -60,7 +60,7 @@ export class ClientesService {
     }
   }
 
-  async updateCliente(id: string, cliente: ClienteUpdate): Promise<Cliente | null> {
+  async updateCliente(id: number, cliente: ClienteUpdate): Promise<Cliente | null> {
     try {
       const { data, error } = await this.supabase.client
         .from('clientes')

@@ -44,7 +44,7 @@ export class VeiculosService {
     }
   }
 
-  async getVeiculosByClienteId(clienteId: string): Promise<Veiculo[]> {
+  async getVeiculosByClienteId(clienteId: number): Promise<Veiculo[]> {
     try {
       const { data, error } = await this.supabase.client
         .from('veiculos')
@@ -60,7 +60,7 @@ export class VeiculosService {
     }
   }
 
-  async updateVeiculo(id: string, veiculo: VeiculoUpdate): Promise<Veiculo | null> {
+  async updateVeiculo(id: number, veiculo: VeiculoUpdate): Promise<Veiculo | null> {
     try {
       const { data, error } = await this.supabase.client
         .from('veiculos')

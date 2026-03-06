@@ -11,79 +11,61 @@ export interface Database {
     Tables: {
       clientes: {
         Row: {
-          id: string
-          nome: string
-          email: string | null
-          telefone: string | null
-          cpf: string | null
-          endereco: string | null
-          cidade: string | null
-          estado: string | null
-          cep: string | null
+          id: number
           created_at: string | null
-          updated_at: string | null
+          cliente_nome: string
+          cliente_telefone: string | null
+          cliente_email: string | null
+          cliente_cpf: string | null
         }
         Insert: {
-          id?: string
-          nome: string
-          email?: string | null
-          telefone?: string | null
-          cpf?: string | null
-          endereco?: string | null
-          cidade?: string | null
-          estado?: string | null
-          cep?: string | null
+          id?: number
           created_at?: string | null
-          updated_at?: string | null
+          cliente_nome: string
+          cliente_telefone?: string | null
+          cliente_email?: string | null
+          cliente_cpf?: string | null
         }
         Update: {
-          id?: string
-          nome?: string
-          email?: string | null
-          telefone?: string | null
-          cpf?: string | null
-          endereco?: string | null
-          cidade?: string | null
-          estado?: string | null
-          cep?: string | null
+          id?: number
           created_at?: string | null
-          updated_at?: string | null
+          cliente_nome?: string
+          cliente_telefone?: string | null
+          cliente_email?: string | null
+          cliente_cpf?: string | null
         }
         Relationships: []
       }
       veiculos: {
         Row: {
-          id: string
-          cliente_id: string | null
-          modelo: string
-          placa: string
-          ano: string | null
-          cor: string | null
-          marca: string | null
+          id: number
           created_at: string | null
-          updated_at: string | null
+          cliente_id: number | null
+          veiculo_placa: string
+          veiculo_modelo: string | null
+          veiculo_marca: string | null
+          veiculo_cor: string | null
+          veiculo_ano: string | null
         }
         Insert: {
-          id?: string
-          cliente_id?: string | null
-          modelo: string
-          placa: string
-          ano?: string | null
-          cor?: string | null
-          marca?: string | null
+          id?: number
           created_at?: string | null
-          updated_at?: string | null
+          cliente_id?: number | null
+          veiculo_placa: string
+          veiculo_modelo?: string | null
+          veiculo_marca?: string | null
+          veiculo_cor?: string | null
+          veiculo_ano?: string | null
         }
         Update: {
-          id?: string
-          cliente_id?: string | null
-          modelo?: string
-          placa?: string
-          ano?: string | null
-          cor?: string | null
-          marca?: string | null
+          id?: number
           created_at?: string | null
-          updated_at?: string | null
+          cliente_id?: number | null
+          veiculo_placa?: string
+          veiculo_modelo?: string | null
+          veiculo_marca?: string | null
+          veiculo_cor?: string | null
+          veiculo_ano?: string | null
         }
         Relationships: [
           {
@@ -98,8 +80,8 @@ export interface Database {
       orcamentos: {
         Row: {
           id: string
-          cliente_id: string | null
-          veiculo_id: string | null
+          cliente_id: number | null
+          veiculo_id: number | null
           cliente_nome: string
           cliente_email: string | null
           cliente_telefone: string | null
@@ -117,8 +99,8 @@ export interface Database {
         }
         Insert: {
           id?: string
-          cliente_id?: string | null
-          veiculo_id?: string | null
+          cliente_id?: number | null
+          veiculo_id?: number | null
           cliente_nome: string
           cliente_email?: string | null
           cliente_telefone?: string | null
@@ -136,8 +118,8 @@ export interface Database {
         }
         Update: {
           id?: string
-          cliente_id?: string | null
-          veiculo_id?: string | null
+          cliente_id?: number | null
+          veiculo_id?: number | null
           cliente_nome?: string
           cliente_email?: string | null
           cliente_telefone?: string | null

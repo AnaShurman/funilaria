@@ -49,9 +49,9 @@ export class OrcamentoService {
       if (!cliente) {
         // Create new cliente
         const novoCliente: ClienteInsert = {
-          nome: dados.clienteNome,
-          telefone: dados.clienteTelefone,
-          email: dados.clienteEmail || null
+          cliente_nome: dados.clienteNome,
+          cliente_telefone: dados.clienteTelefone,
+          cliente_email: dados.clienteEmail || null
         };
         cliente = await this.clientesService.createCliente(novoCliente);
       }
@@ -63,9 +63,9 @@ export class OrcamentoService {
         // Create new veiculo
         const novoVeiculo: VeiculoInsert = {
           cliente_id: cliente.id,
-          modelo: dados.veiculoModelo,
-          placa: dados.veiculoPlaca,
-          ano: dados.veiculoAno
+          veiculo_modelo: dados.veiculoModelo,
+          veiculo_placa: dados.veiculoPlaca,
+          veiculo_ano: dados.veiculoAno
         };
         veiculo = await this.veiculosService.createVeiculo(novoVeiculo);
       }
