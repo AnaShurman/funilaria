@@ -43,31 +43,42 @@ export class OrcamentoService {
    */
   async salvarOrcamento(dados: OrcamentoData): Promise<any> {
     try {
+      console.log('=== INICIANDO SALVAMENTO ===');
+      console.log('Dados recebidos:', dados);
+      
       // 1. Check if cliente exists or create new one
+      console.log('1. Buscando cliente por telefone:', dados.clienteTelefone);
       let cliente = await this.clientesService.getClienteByTelefone(dados.clienteTelefone);
+      console.log('Cliente encontrado:', cliente);
       
       if (!cliente) {
-        // Create new cliente
+        console.log('Cliente não encontrado, criando novo...');
         const novoCliente: ClienteInsert = {
           cliente_nome: dados.clienteNome,
           cliente_telefone: dados.clienteTelefone,
           cliente_email: dados.clienteEmail || null
         };
+        console.log('Dados do novo cliente:', novoCliente);
         cliente = await this.clientesService.createCliente(novoCliente);
+        console.log('Cliente criado:', cliente);
       }
 
       // 2. Check if veiculo exists or create new one
+      console.log('2. Buscando veículo por placa:', dados.veiculoPlaca);
       let veiculo = await this.veiculosService.getVeiculoByPlaca(dados.veiculoPlaca);
+      console.log('Veículo encontrado:', veiculo);
       
       if (!veiculo && cliente) {
-        // Create new veiculo
+        console.log('Veículo não encontrado, criando novo...');
         const novoVeiculo: VeiculoInsert = {
           cliente_id: cliente.id,
           veiculo_modelo: dados.veiculoModelo,
           veiculo_placa: dados.veiculoPlaca,
           veiculo_ano: dados.veiculoAno
         };
+        console.log('Dados do novo veículo:', novoVeiculo);
         veiculo = await this.veiculosService.createVeiculo(novoVeiculo);
+        console.log('Veículo criado:', veiculo);
       }
 
       // 3. Insert main budget record
