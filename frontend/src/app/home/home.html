@@ -1,0 +1,190 @@
+<div class="dashboard-container">
+  <p-toast />
+  
+  <!-- Header com estatísticas -->
+  <div class="dashboard-header">
+    <h1>Dashboard de Orçamentos</h1>
+    <p-button 
+      label="Novo Orçamento" 
+      icon="pi pi-plus" 
+      (onClick)="novoOrcamento()">
+    </p-button>
+  </div>
+
+  <!-- Cards de estatísticas gerais -->
+  <div class="stats-grid">
+    <p-card>
+      <div class="stat-card">
+        <i class="pi pi-file stat-icon"></i>
+        <div class="stat-content">
+          <span class="stat-label">Total de Orçamentos</span>
+          <span class="stat-value">{{ totalOrcamentos }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="stat-card">
+        <i class="pi pi-clock stat-icon warning"></i>
+        <div class="stat-content">
+          <span class="stat-label">Pendentes</span>
+          <span class="stat-value">{{ orcamentosPendentes }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="stat-card">
+        <i class="pi pi-dollar stat-icon success"></i>
+        <div class="stat-content">
+          <span class="stat-label">Valor Total</span>
+          <span class="stat-value">{{ formatarMoeda(valorTotalGeral) }}</span>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Métricas Mensais -->
+  <div class="monthly-section">
+    <h2>Métricas de {{ getNomeMesAtual() }}</h2>
+    <div class="stats-grid">
+      <p-card>
+        <div class="stat-card">
+          <i class="pi pi-calendar stat-icon info"></i>
+          <div class="stat-content">
+            <span class="stat-label">Orçamentos em {{ getNomeMesAtual() }}</span>
+            <span class="stat-value">{{ orcamentosMesAtual }}</span>
+            <div class="stat-growth" [ngClass]="getCrescimentoClass(crescimentoOrcamentos)">
+              <i class="pi" [ngClass]="getCrescimentoIcon(crescimentoOrcamentos)"></i>
+              <span>{{ crescimentoOrcamentos | number:'1.1-1' }}% vs mês anterior</span>
+            </div>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="stat-card">
+          <i class="pi pi-money-bill stat-icon success"></i>
+          <div class="stat-content">
+            <span class="stat-label">Faturamento em {{ getNomeMesAtual() }}</span>
+            <span class="stat-value">{{ formatarMoeda(valorMesAtual) }}</span>
+            <div class="stat-growth" [ngClass]="getCrescimentoClass(crescimentoValor)">
+              <i class="pi" [ngClass]="getCrescimentoIcon(crescimentoValor)"></i>
+              <span>{{ crescimentoValor | number:'1.1-1' }}% vs mês anterior</span>
+            </div>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card>
+        <div class="stat-card">
+          <i class="pi pi-chart-line stat-icon info"></i>
+          <div class="stat-content">
+            <span class="stat-label">Ticket Médio</span>
+            <span class="stat-value">{{ formatarMoeda(orcamentosMesAtual > 0 ? valorMesAtual / orcamentosMesAtual : 0) }}</span>
+            <small class="stat-subtitle">Valor médio por orçamento</small>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Tabela de orçamentos -->
+  <p-card>
+    <p-table 
+      [value]="orcamentos" 
+      [loading]="loading"
+      [paginator]="true" 
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} orçamentos"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      styleClass="p-datatable-striped">
+      
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="numero_orcamento">
+            Número <p-sortIcon field="numero_orcamento"></p-sortIcon>
+          </th>
+          <th pSortableColumn="cliente_nome">
+            Cliente <p-sortIcon field="cliente_nome"></p-sortIcon>
+          </th>
+          <th pSortableColumn="veiculo_modelo">
+            Veículo <p-sortIcon field="veiculo_modelo"></p-sortIcon>
+          </th>
+          <th pSortableColumn="valor_total">
+            Valor Total <p-sortIcon field="valor_total"></p-sortIcon>
+          </th>
+          <th pSortableColumn="status">
+            Status <p-sortIcon field="status"></p-sortIcon>
+          </th>
+          <th pSortableColumn="created_at">
+            Data <p-sortIcon field="created_at"></p-sortIcon>
+          </th>
+          <th style="width: 150px;">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-orcamento>
+        <tr>
+          <td><strong>{{ orcamento.numero_orcamento }}</strong></td>
+          <td>
+            <div>{{ orcamento.cliente_nome }}</div>
+            <small class="text-muted">{{ orcamento.cliente_telefone }}</small>
+          </td>
+          <td>
+            <div>{{ orcamento.veiculo_modelo }}</div>
+            <small class="text-muted">{{ orcamento.veiculo_placa }}</small>
+          </td>
+          <td><strong>{{ formatarMoeda(orcamento.valor_total) }}</strong></td>
+          <td>
+            <p-tag 
+              [value]="getStatusLabel(orcamento.status)" 
+              [severity]="getSeverity(orcamento.status)">
+            </p-tag>
+          </td>
+          <td>{{ formatarData(orcamento.created_at) }}</td>
+          <td>
+            <div class="action-buttons">
+              <p-button 
+                icon="pi pi-eye" 
+                [rounded]="true"
+                [text]="true"
+                severity="info"
+                size="small"
+                (onClick)="visualizarOrcamento(orcamento)"
+                pTooltip="Visualizar">
+              </p-button>
+              <p-button 
+                icon="pi pi-trash" 
+                [rounded]="true"
+                [text]="true"
+                severity="danger"
+                size="small"
+                (onClick)="deletarOrcamento(orcamento.id)"
+                pTooltip="Deletar">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="empty-message">
+            <div class="empty-state">
+              <i class="pi pi-inbox"></i>
+              <h3>Nenhum orçamento encontrado</h3>
+              <p>Comece criando seu primeiro orçamento</p>
+              <p-button 
+                label="Criar Orçamento" 
+                icon="pi pi-plus"
+                (onClick)="novoOrcamento()">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

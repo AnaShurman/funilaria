@@ -1,0 +1,302 @@
+.test-button-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    content: "⚡";
+    font-size: 20px;
+  }
+}
+
+.orcamento-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+// Panel customization - always light theme
+::ng-deep {
+  .p-panel {
+    background-color: #ffffff !important;
+    transition: all 0.3s ease;
+
+    .p-panel-header {
+      background-color: #ffffff !important;
+      color: #2c3e50 !important;
+    }
+
+    .p-panel-title {
+      color: #2c3e50 !important;
+    }
+
+    .p-panel-content {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+  }
+}
+
+.form-section {
+  margin-bottom: 2rem;
+
+  h3 {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #d1d5db;
+    transition: all 0.3s ease;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    &.p-invalid {
+      border-color: #ef4444;
+    }
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+  }
+
+  small.p-error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  ::ng-deep {
+    .p-inputnumber {
+      width: 100%;
+
+      input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background-color: #ffffff !important;
+        color: #333333 !important;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #007bff;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        &.p-invalid {
+          border-color: #ef4444;
+        }
+      }
+
+      .p-inputnumber-button {
+        background-color: #f8f9fa !important;
+        color: #333333 !important;
+        border: 1px solid #d1d5db !important;
+
+        &:hover {
+          background-color: #e9ecef !important;
+        }
+      }
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #d1d5db;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.item-row {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1.5fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.item-grid-servico {
+  display: grid;
+  grid-template-columns: 3fr 2fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.subtotal-field {
+  .subtotal-value {
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: right;
+  }
+}
+
+.button-field {
+  display: flex;
+  align-items: flex-end;
+}
+
+.total-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  font-size: 1.1rem;
+
+  strong {
+    color: #2c3e50;
+  }
+
+  .total-value {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+}
+
+.valor-total-destaque {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+
+  .total-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+    letter-spacing: 1px;
+  }
+
+  .total-amount {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .item-grid {
+    grid-template-columns: 1fr;
+    
+    .button-field {
+      justify-content: flex-end;
+    }
+  }
+
+  .item-grid-servico {
+    grid-template-columns: 1fr;
+    
+    .button-field {
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    ::ng-deep p-button {
+      width: 100%;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+

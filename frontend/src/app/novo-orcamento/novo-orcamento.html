@@ -1,0 +1,294 @@
+<div class="orcamento-container">
+  <p-toast />
+  <p-panel header="Novo Orçamento">
+    <div class="test-button-container">
+      <p-button
+        label="Preencher Dados de Teste"
+        icon="pi pi-bolt"
+        severity="help"
+        size="small"
+        type="button"
+        (onClick)="preencherDadosTeste()">
+      </p-button>
+    </div>
+    <form [formGroup]="orcamentoForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Dados do Cliente -->
+      <div class="form-section">
+        <h3>Dados do Cliente</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="clienteNome">Nome do Cliente *</label>
+            <input 
+              pInputText 
+              id="clienteNome" 
+              formControlName="clienteNome"
+              placeholder="Nome completo"
+              [class.p-invalid]="isFieldInvalid('clienteNome')" />
+            <small class="p-error" *ngIf="isFieldInvalid('clienteNome')">
+              Nome é obrigatório (mínimo 3 caracteres)
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="clienteTelefone">Telefone *</label>
+            <input 
+              pInputText 
+              id="clienteTelefone" 
+              formControlName="clienteTelefone"
+              placeholder="(00) 00000-0000"
+              [class.p-invalid]="isFieldInvalid('clienteTelefone')" />
+            <small class="p-error" *ngIf="isFieldInvalid('clienteTelefone')">
+              Telefone é obrigatório
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="clienteEmail">E-mail</label>
+            <input 
+              pInputText 
+              id="clienteEmail" 
+              formControlName="clienteEmail"
+              type="email"
+              placeholder="email@exemplo.com"
+              [class.p-invalid]="isFieldInvalid('clienteEmail')" />
+            <small class="p-error" *ngIf="isFieldInvalid('clienteEmail')">
+              E-mail inválido
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados do Veículo -->
+      <div class="form-section">
+        <h3>Dados do Veículo</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="veiculoModelo">Modelo *</label>
+            <input 
+              pInputText 
+              id="veiculoModelo" 
+              formControlName="veiculoModelo"
+              placeholder="Ex: Fiat Uno"
+              [class.p-invalid]="isFieldInvalid('veiculoModelo')" />
+            <small class="p-error" *ngIf="isFieldInvalid('veiculoModelo')">
+              Modelo é obrigatório
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="veiculoPlaca">Placa *</label>
+            <input 
+              pInputText 
+              id="veiculoPlaca" 
+              formControlName="veiculoPlaca"
+              placeholder="ABC-1234"
+              [class.p-invalid]="isFieldInvalid('veiculoPlaca')" />
+            <small class="p-error" *ngIf="isFieldInvalid('veiculoPlaca')">
+              Placa é obrigatória
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label for="veiculoAno">Ano *</label>
+            <input 
+              pInputText 
+              id="veiculoAno" 
+              formControlName="veiculoAno"
+              placeholder="2020"
+              [class.p-invalid]="isFieldInvalid('veiculoAno')" />
+            <small class="p-error" *ngIf="isFieldInvalid('veiculoAno')">
+              Ano é obrigatório
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Materiais -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Materiais</h3>
+          <p-button 
+            label="Adicionar Material" 
+            icon="pi pi-plus" 
+            severity="success"
+            size="small"
+            type="button"
+            (onClick)="addMaterial()">
+          </p-button>
+        </div>
+        
+        <div formArrayName="materiais">
+          <div *ngFor="let material of materiais.controls; let i = index" [formGroupName]="i" class="item-row">
+            <div class="item-grid">
+              <div class="form-field">
+                <label>Descrição *</label>
+                <input 
+                  pInputText 
+                  formControlName="descricao"
+                  placeholder="Ex: Tinta automotiva" />
+              </div>
+
+              <div class="form-field">
+                <label>Quantidade *</label>
+                <p-inputNumber
+                  formControlName="quantidade"
+                  [min]="1"
+                  [showButtons]="true">
+                </p-inputNumber>
+              </div>
+
+              <div class="form-field">
+                <label>Valor Unitário (R$) *</label>
+                <p-inputNumber
+                  formControlName="valorUnitario"
+                  mode="currency"
+                  currency="BRL"
+                  locale="pt-BR">
+                </p-inputNumber>
+              </div>
+
+              <div class="form-field subtotal-field">
+                <label>Subtotal</label>
+                <div class="subtotal-value">
+                  {{ (material.get('quantidade')?.value || 0) * (material.get('valorUnitario')?.value || 0) | currency:'BRL' }}
+                </div>
+              </div>
+
+              <div class="form-field button-field">
+                <p-button 
+                  icon="pi pi-trash" 
+                  severity="danger"
+                  size="small"
+                  type="button"
+                  [disabled]="materiais.length === 1"
+                  (onClick)="removeMaterial(i)">
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-row">
+          <strong>Total Materiais:</strong>
+          <span class="total-value">{{ calcularTotalMateriais() | currency:'BRL' }}</span>
+        </div>
+      </div>
+
+      <!-- Serviços -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>Serviços</h3>
+          <p-button 
+            label="Adicionar Serviço" 
+            icon="pi pi-plus" 
+            severity="success"
+            size="small"
+            type="button"
+            (onClick)="addServico()">
+          </p-button>
+        </div>
+        
+        <div formArrayName="servicos">
+          <div *ngFor="let servico of servicos.controls; let i = index" [formGroupName]="i" class="item-row">
+            <div class="item-grid-servico">
+              <div class="form-field">
+                <label>Descrição do Serviço *</label>
+                <input 
+                  pInputText 
+                  formControlName="descricao"
+                  placeholder="Ex: Pintura completa" />
+              </div>
+
+              <div class="form-field">
+                <label>Valor (R$) *</label>
+                <p-inputNumber
+                  formControlName="valor"
+                  mode="currency"
+                  currency="BRL"
+                  locale="pt-BR">
+                </p-inputNumber>
+              </div>
+
+              <div class="form-field button-field">
+                <p-button 
+                  icon="pi pi-trash" 
+                  severity="danger"
+                  size="small"
+                  type="button"
+                  [disabled]="servicos.length === 1"
+                  (onClick)="removeServico(i)">
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-row">
+          <strong>Total Serviços:</strong>
+          <span class="total-value">{{ calcularTotalServicos() | currency:'BRL' }}</span>
+        </div>
+      </div>
+
+      <!-- Mão de Obra -->
+      <div class="form-section">
+        <h3>Mão de Obra</h3>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="maoDeObra">Valor da Mão de Obra (R$) *</label>
+            <p-inputNumber
+              id="maoDeObra"
+              formControlName="maoDeObra"
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+              [class.p-invalid]="isFieldInvalid('maoDeObra')">
+            </p-inputNumber>
+            <small class="p-error" *ngIf="isFieldInvalid('maoDeObra')">
+              Valor da mão de obra é obrigatório
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Valor Total -->
+      <div class="valor-total-destaque">
+        <div class="total-label">VALOR TOTAL DO ORÇAMENTO</div>
+        <div class="total-amount">{{ calcularTotal() | currency:'BRL' }}</div>
+      </div>
+
+      <!-- Informações Adicionais -->
+      <div class="form-section">
+        <h3>Informações Adicionais</h3>
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label for="observacoes">Observações</label>
+            <textarea
+              pInputText
+              id="observacoes"
+              formControlName="observacoes"
+              rows="3"
+              placeholder="Observações adicionais (opcional)"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões -->
+      <div class="form-actions">
+        <p-button 
+          label="Cancelar" 
+          icon="pi pi-times" 
+          severity="secondary"
+          type="button"
+          (onClick)="onCancel()">
+        </p-button>
+        <p-button 
+          label="Gerar Orçamento PDF" 
+          icon="pi pi-file-pdf" 
+          type="submit"
+          [disabled]="orcamentoForm.invalid">
+        </p-button>
+      </div>
+    </form>
+  </p-panel>
+</div>

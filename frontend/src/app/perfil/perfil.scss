@@ -1,0 +1,134 @@
+// Panel customization - always light theme
+::ng-deep {
+  .p-panel {
+    background-color: #ffffff !important;
+    transition: all 0.3s ease;
+
+    .p-panel-header {
+      background-color: #ffffff !important;
+      color: #2c3e50 !important;
+    }
+
+    .p-panel-title {
+      color: #2c3e50 !important;
+    }
+
+    .p-panel-content {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+  }
+}
+
+.oficina-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+
+  .logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      transition: all 0.3s ease;
+
+      .no-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        color: #6b7280;
+
+        i {
+          color: #6b7280;
+        }
+
+        p {
+          margin: 0;
+          font-size: 1rem;
+          color: #6b7280;
+        }
+      }
+    }
+
+    .upload-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+
+      .upload-hint {
+        color: #6b7280;
+        font-size: 0.875rem;
+        text-align: center;
+      }
+    }
+  }
+
+  .info-section {
+    h3 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: #2c3e50;
+      font-size: 1.5rem;
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+
+      .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.75rem;
+        background-color: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: #f8f9fa;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+          color: #6b7280;
+          font-size: 0.875rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        span {
+          color: #2c3e50;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .oficina-profile {
+    .info-section .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+

@@ -1,0 +1,76 @@
+<div class="card flex justify-center">
+    <p-panel header="Perfil da Oficina">
+        <div class="oficina-profile">
+            <!-- Logo Display -->
+            <div class="logo-section">
+                <div class="logo-container">
+                    <p-image
+                        *ngIf="logoUrl; else noLogo"
+                        [src]="logoUrl"
+                        alt="Logo da Oficina"
+                        [width]="'300'"
+                        [height]="'300'"
+                        [preview]="true">
+                    </p-image>
+                    <ng-template #noLogo>
+                        <div class="no-logo">
+                            <i class="pi pi-image" style="font-size: 4rem; color: #ccc;"></i>
+                            <p>Nenhum logo cadastrado</p>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <!-- Upload Button -->
+                <div class="upload-section">
+                    <p-fileUpload
+                        mode="basic"
+                        name="logo"
+                        accept="image/*"
+                        [maxFileSize]="5000000"
+                        [auto]="true"
+                        chooseLabel="Escolher Logo"
+                        [disabled]="isUploading"
+                        (onSelect)="onFileSelect($event)"
+                        [customUpload]="true">
+                    </p-fileUpload>
+                    <small class="upload-hint">Tamanho máximo: 5MB. Formatos: JPG, PNG, GIF</small>
+                </div>
+            </div>
+
+            <!-- Oficina Info -->
+            <div class="info-section" *ngIf="oficinaInfo">
+                <h3>{{ oficinaInfo.nome }}</h3>
+                <div class="info-grid">
+                    <div class="info-item" *ngIf="oficinaInfo.cnpj">
+                        <strong>CNPJ:</strong>
+                        <span>{{ oficinaInfo.cnpj }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.telefone">
+                        <strong>Telefone:</strong>
+                        <span>{{ oficinaInfo.telefone }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.email">
+                        <strong>Email:</strong>
+                        <span>{{ oficinaInfo.email }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.endereco">
+                        <strong>Endereço:</strong>
+                        <span>{{ oficinaInfo.endereco }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.cidade">
+                        <strong>Cidade:</strong>
+                        <span>{{ oficinaInfo.cidade }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.estado">
+                        <strong>Estado:</strong>
+                        <span>{{ oficinaInfo.estado }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="oficinaInfo.cep">
+                        <strong>CEP:</strong>
+                        <span>{{ oficinaInfo.cep }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+</div>
