@@ -33,7 +33,7 @@ export class VeiculosService {
       const { data, error } = await this.supabase.client
         .from('veiculos')
         .select('*')
-        .eq('placa', placa)
+        .eq('veiculo_placa', placa)
         .single();
 
       if (error && error.code !== 'PGRST116') throw error;
