@@ -239,6 +239,30 @@ export class Home implements OnInit {
     }
   }
 
+  async compartilharOrcamentoNoWhatsApp(orcamento: any): Promise<void> {
+    // Open WhatsApp synchronously from the click to reduce popup-blocking risk.
+    const mensagem = [
+      `Orçamento nº ${orcamento.numero_orcamento}`,
+      `Cliente: ${orcamento.cliente_nome || 'Não informado'}`,
+      `Veículo: ${orcamento.veiculo_modelo || 'Não informado'}`,
+      `Valor total: ${this.formatarMoeda(orcamento.valor_total)}`,
+      '',
+      'Vou anexar o PDF deste orçamento para guardar e encaminhar depois.'
+    ].join('\n');
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+
+    // Open the existing printable budget view; the user can save it as PDF
+    // and attach that file in their WhatsApp conversation with themselves.
+    await this.visualizarOrcamento(orcamento);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Finalize o envio',
+      detail: 'Na janela do orçamento, use Imprimir > Salvar como PDF. Depois, anexe o arquivo na conversa do WhatsApp aberta.',
+      life: 7000
+    });
+  }
+
   async deletarOrcamento(id: string) {
     if (confirm('Tem certeza que deseja deletar este orçamento?')) {
       try {
