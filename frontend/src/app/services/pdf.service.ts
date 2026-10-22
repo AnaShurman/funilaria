@@ -7,6 +7,105 @@ export class PdfService {
 
   constructor() { }
 
+
+  async gerarOrcamentoPDFBlob(dados: any, oficinaInfo?: any): Promise<Blob> {
+    const linhas: string[] = [];
+    const moeda = (valor: unknown) => new Intl.NumberFormat('pt-BR', {
+      style: 'currency', currency: 'BRL'
+    }).format(Number(valor) || 0);
+    const adicionar = (texto: unknown = '') => {
+      const limpo = String(texto ?? '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+        .replace(/[^\\x20-\\x7E]/g, '?');
+      const largura = 88;
+      if (!limpo) { linhas.push(''); return; }
+      for (let i = 0; i < limpo.length; i += largura) linhas.push(limpo.slice(i, i + largura));
+    };
+
+    adicionar(oficinaInfo?.nome || 'Funilaria Shurman');
+    if (oficinaInfo?.telefone) adicionar('Telefone: ' + oficinaInfo.telefone);
+    if (oficinaInfo?.email) adicionar('Email: ' + oficinaInfo.email);
+    if (oficinaInfo?.endereco) adicionar('Endereco: ' + oficinaInfo.endereco);
+    adicionar('ORCAMENTO');
+    adicionar('Numero: ' + (dados.numeroOrcamento || ''));
+    adicionar('Data: ' + new Date().toLocaleDateString('pt-BR'));
+    adicionar('');
+    adicionar('DADOS DO CLIENTE');
+    adicionar('Nome: ' + (dados.clienteNome || 'Nao informado'));
+    adicionar('Telefone: ' + (dados.clienteTelefone || 'Nao informado'));
+    if (dados.clienteEmail) adicionar('Email: ' + dados.clienteEmail);
+    adicionar('');
+    adicionar('DADOS DO VEICULO');
+    adicionar('Modelo: ' + (dados.veiculoModelo || 'Nao informado'));
+    adicionar('Placa: ' + (dados.veiculoPlaca || 'Nao informada'));
+    adicionar('Ano: ' + (dados.veiculoAno || 'Nao informado'));
+    adicionar('');
+    adicionar('MATERIAIS');
+    if (dados.materiais?.length) {
+      dados.materiais.forEach((m: any) => adicionar(
+        (m.descricao || 'Material') + ' | Qtd: ' + (m.quantidade ?? 1) +
+        ' | Unit.: ' + moeda(m.valorUnitario) +
+        ' | Subtotal: ' + moeda((Number(m.quantidade) || 1) * (Number(m.valorUnitario) || 0))
+      ));
+    } else adicionar('Nenhum material cadastrado');
+    adicionar('Total materiais: ' + moeda(dados.totalMateriais));
+    adicionar('');
+    adicionar('SERVICOS');
+    if (dados.servicos?.length) {
+      dados.servicos.forEach((s: any) => adicionar((s.descricao || 'Servico') + ' | ' + moeda(s.valor)));
+    } else adicionar('Nenhum servico cadastrado');
+    adicionar('Total servicos: ' + moeda(dados.totalServicos));
+    adicionar('');
+    adicionar('MAO DE OBRA: ' + moeda(dados.maoDeObra));
+    if (dados.observacoes) {
+      adicionar('');
+      adicionar('OBSERVACOES');
+      String(dados.observacoes).split(/\\r?\\n/).forEach((linha: string) => adicionar(linha));
+    }
+    adicionar('');
+    adicionar('VALOR TOTAL DO ORCAMENTO: ' + moeda(dados.valorTotal));
+    adicionar('');
+    adicionar('Este orcamento e valido por 30 dias a partir da data de emissao.');
+    adicionar('Os valores podem sofrer alteracoes mediante avaliacao tecnica detalhada.');
+
+    const paginaLinhas = 48;
+    const paginas: string[][] = [];
+    for (let i = 0; i < linhas.length; i += paginaLinhas) paginas.push(linhas.slice(i, i + paginaLinhas));
+    if (!paginas.length) paginas.push(['ORCAMENTO']);
+    const objetos: string[] = [];
+    const catalogId = 1, pagesId = 2, fontId = 3;
+    objetos[catalogId] = '<< /Type /Catalog /Pages 2 0 R >>';
+    objetos[pagesId] = '';
+    objetos[fontId] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+    const kids: string[] = [];
+    paginas.forEach((pagina, index) => {
+      const pageId = 4 + index * 2;
+      const contentId = pageId + 1;
+      kids.push(pageId + ' 0 R');
+      const comandos = ['BT', '/F1 10 Tf', '50 790 Td', '14 TL'];
+      pagina.forEach((linha, linhaIndex) => {
+        if (linhaIndex > 0) comandos.push('T*');
+        const segura = linha.replace(/\\\\/g, '\\\\').replace(/\\(/g, '\\(').replace(/\\)/g, '\\)');
+        comandos.push('(' + segura + ') Tj');
+      });
+      comandos.push('ET');
+      const stream = comandos.join('\\n');
+      objetos[pageId] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ' + contentId + ' 0 R >>';
+      objetos[contentId] = '<< /Length ' + stream.length + ' >>\\nstream\\n' + stream + '\\nendstream';
+    });
+    objetos[pagesId] = '<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + paginas.length + ' >>';
+    let pdf = '%PDF-1.4\\n';
+    const offsets = [0];
+    for (let i = 1; i < objetos.length; i++) {
+      offsets[i] = pdf.length;
+      pdf += i + ' 0 obj\\n' + objetos[i] + '\\nendobj\\n';
+    }
+    const xrefOffset = pdf.length;
+    pdf += 'xref\\n0 ' + objetos.length + '\\n0000000000 65535 f \\n';
+    for (let i = 1; i < objetos.length; i++) pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \\n';
+    pdf += 'trailer\\n<< /Size ' + objetos.length + ' /Root 1 0 R >>\\nstartxref\\n' + xrefOffset + '\\n%%EOF';
+    return new Blob([pdf], { type: 'application/pdf' });
+  }
+
   async gerarOrcamentoPDF(dados: any, logoUrl?: string, oficinaInfo?: any, apenasVisualizar: boolean = false): Promise<void> {
     // Criar um elemento HTML temporário para o conteúdo do PDF
     const conteudo = this.criarConteudoHTML(dados, logoUrl, oficinaInfo);
