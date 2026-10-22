@@ -253,12 +253,12 @@
   width: 46px;
   height: 46px;
   border-radius: 14px;
-  background: #e4f4ec;
-  color: #087f5b;
+  background: #e8efff;
+  color: #2563eb;
   font-size: 1.35rem;
 }
 .stat-card .stat-icon.warning { background: #fff2dc; color: #c57a13; }
-.stat-card .stat-icon.success { background: #e1f6ec; color: #087f5b; }
+.stat-card .stat-icon.success { background: #e8efff; color: #2563eb; }
 .stat-card .stat-icon.info { background: #e8efff; color: #315fc2; }
 .stat-card .stat-content { min-width: 0; }
 .stat-card .stat-content .stat-label { font-size: .78rem; line-height: 1.35; }
@@ -323,7 +323,7 @@
   .stat-card { align-items: flex-start; gap: .55rem; flex-direction: column; }
   .stat-card .stat-icon { width: 36px; height: 36px; flex-basis: 36px; border-radius: 11px; background: #e1efff; color: #1675d1; }
   .stat-card .stat-icon.warning { background: #fff0d9; color: #c57a13; }
-  .stat-card .stat-icon.success { background: #d9f8ed; color: #079669; }
+  .stat-card .stat-icon.success { background: #dbeafe; color: #2563eb; }
   .stat-card .stat-content .stat-label { font-size: .72rem; }
   .stat-card .stat-content .stat-value { font-size: clamp(1.1rem, 5vw, 1.4rem); }
   .monthly-section { margin: 1rem 0; }
