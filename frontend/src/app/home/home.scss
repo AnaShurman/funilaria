@@ -306,3 +306,42 @@
   .stat-card { align-items: center; }
   .stat-card .stat-content .stat-value { font-size: 1.45rem; }
 }
+
+
+/* Blue prototype dashboard and mobile-first quote cards */
+.dashboard-container { background: transparent; }
+.stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mobile-quotes { display: none; }
+@media (max-width: 768px) {
+  .dashboard-container { padding: .75rem .8rem 6.5rem; }
+  .dashboard-header { position: relative; padding-top: 1.25rem; gap: .85rem; margin-bottom: 1rem; }
+  .dashboard-header::before { content: "VISÃO GERAL"; position: static; transform: none; color: #2563eb; font-size: .68rem; font-weight: 800; letter-spacing: .14em; margin-bottom: -.45rem; }
+  .dashboard-header h1 { font-size: 1.55rem !important; line-height: 1.2; }
+  .dashboard-header p-button, .dashboard-header p-button ::ng-deep button { width: 100%; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin-bottom: 1rem; }
+  .stats-grid ::ng-deep .p-card .p-card-body { padding: .85rem; }
+  .stat-card { align-items: flex-start; gap: .55rem; flex-direction: column; }
+  .stat-card .stat-icon { width: 36px; height: 36px; flex-basis: 36px; border-radius: 11px; background: #e1efff; color: #1675d1; }
+  .stat-card .stat-icon.warning { background: #fff0d9; color: #c57a13; }
+  .stat-card .stat-icon.success { background: #d9f8ed; color: #079669; }
+  .stat-card .stat-content .stat-label { font-size: .72rem; }
+  .stat-card .stat-content .stat-value { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+  .monthly-section { margin: 1rem 0; }
+  .monthly-section h2 { font-size: 1.05rem; }
+  .mobile-quotes { display: block; margin-top: 1.1rem; }
+  .mobile-quotes-heading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin: 0 0 .8rem; }
+  .mobile-quotes-heading h2 { margin: 0; color: #123c75; font-size: 1.05rem; }
+  .mobile-quotes-heading h2 i { color: #1675d1; margin-right: .35rem; }
+  .mobile-quotes-heading > span { color: #6682a7; font-size: .75rem; }
+  .mobile-quote-card { background: #fff; border: 1px solid #dbeafe; border-radius: 16px; padding: 1rem; margin-bottom: .7rem; box-shadow: 0 4px 14px rgba(37,99,235,.06); }
+  .mobile-quote-topline { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .mobile-quote-topline > strong { color: #2563eb; font-size: .8rem; }
+  .mobile-quote-card h3 { margin: .75rem 0 .2rem; color: #153e73; font-size: 1rem; }
+  .mobile-quote-vehicle { margin: 0; color: #68809e; font-size: .83rem; }
+  .mobile-quote-details { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-top: .9rem; padding-top: .75rem; border-top: 1px solid #edf3fc; color: #6b83a3; font-size: .78rem; }
+  .mobile-quote-details strong { color: #153e73; font-size: .95rem; }
+  .mobile-quote-actions { display: flex; align-items: center; justify-content: flex-end; gap: .35rem; margin-top: .5rem; }
+  .mobile-quote-actions ::ng-deep .p-button { min-height: 36px; }
+  .desktop-quotes { display: none !important; }
+}
+@media (max-width: 390px) { .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
