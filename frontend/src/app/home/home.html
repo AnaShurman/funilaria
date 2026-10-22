@@ -89,8 +89,36 @@
     </div>
   </div>
 
-  <!-- Tabela de orçamentos -->
-  <p-card>
+  <!-- Mobile quote cards -->
+  <section class="mobile-quotes" aria-label="Orçamentos recentes">
+    <div class="mobile-quotes-heading">
+      <h2><i class="pi pi-file"></i> Orçamentos recentes</h2>
+      <span>{{ totalOrcamentos }} no total</span>
+    </div>
+    <article class="mobile-quote-card" *ngFor="let orcamento of orcamentos">
+      <div class="mobile-quote-topline">
+        <strong>#{{ orcamento.numero_orcamento }}</strong>
+        <p-tag [value]="getStatusLabel(orcamento.status)" [severity]="getSeverity(orcamento.status)" />
+      </div>
+      <h3>{{ orcamento.cliente_nome || 'Cliente não informado' }}</h3>
+      <p class="mobile-quote-vehicle">{{ orcamento.veiculo_modelo || 'Veículo não informado' }}<span *ngIf="orcamento.veiculo_placa"> · {{ orcamento.veiculo_placa }}</span></p>
+      <div class="mobile-quote-details">
+        <span>{{ formatarData(orcamento.created_at) }}</span>
+        <strong>{{ formatarMoeda(orcamento.valor_total) }}</strong>
+      </div>
+      <div class="mobile-quote-actions">
+        <p-button label="Visualizar" icon="pi pi-eye" [outlined]="true" size="small" (onClick)="visualizarOrcamento(orcamento)" />
+        <p-button icon="pi pi-trash" severity="danger" [text]="true" size="small" (onClick)="deletarOrcamento(orcamento.id)" ariaLabel="Deletar orçamento" />
+      </div>
+    </article>
+    <div class="mobile-empty-state" *ngIf="!loading && orcamentos.length === 0">
+      <i class="pi pi-inbox"></i><h3>Nenhum orçamento encontrado</h3>
+      <p-button label="Criar Orçamento" icon="pi pi-plus" (onClick)="novoOrcamento()" />
+    </div>
+  </section>
+
+  <!-- Desktop/tablet quote table -->
+  <p-card class="desktop-quotes">
     <p-table 
       [value]="orcamentos" 
       [loading]="loading"
