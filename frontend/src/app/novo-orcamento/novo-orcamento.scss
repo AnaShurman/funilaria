@@ -516,3 +516,85 @@
   .valor-total-destaque .total-amount { line-height: 1.2; }
 }
 
+
+
+/* Quote editor: consistent with the redesigned app */
+.orcamento-container {
+  max-width: 1120px;
+  padding: clamp(.25rem, 1.5vw, 1rem);
+}
+.form-section {
+  padding: 1.15rem;
+  margin-bottom: 1.25rem;
+  background: #fff;
+  border: 1px solid #e3ebe5;
+  border-radius: 16px;
+  box-shadow: 0 3px 14px rgba(21,55,39,.035);
+}
+.form-section h3 {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: #183d30;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border-bottom: 1px solid #e5ece7;
+  padding-bottom: .8rem;
+}
+.form-field label { color: #334e42; font-weight: 700; font-size: .85rem; }
+.form-field input, .form-field textarea,
+.form-field ::ng-deep .p-inputnumber input {
+  border: 1px solid #dce6df !important;
+  border-radius: 10px !important;
+  min-height: 46px;
+  box-sizing: border-box;
+}
+.form-field input:focus, .form-field textarea:focus,
+.form-field ::ng-deep .p-inputnumber input:focus {
+  border-color: #087f5b !important;
+  box-shadow: 0 0 0 3px rgba(8,127,91,.1) !important;
+}
+.item-row {
+  border: 1px solid #e1eae3;
+  border-radius: 14px;
+  background: #f9fbf9;
+  padding: 1rem;
+}
+.subtotal-field .subtotal-value {
+  background: #edf5ef;
+  border-color: #dce9df;
+  color: #174d37;
+  border-radius: 10px;
+}
+.total-row {
+  background: #edf5ef;
+  border: 1px solid #dbe9df;
+  border-radius: 13px;
+}
+.total-row .total-value { color: #087f5b; }
+.valor-total-destaque {
+  background: linear-gradient(135deg, #087f5b 0%, #075b42 100%);
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(8,127,91,.2);
+  text-align: left;
+  padding: 1.5rem 1.75rem;
+}
+.valor-total-destaque .total-label { text-transform: uppercase; font-size: .75rem; letter-spacing: .13em; }
+.valor-total-destaque .total-amount { font-size: clamp(2rem, 5vw, 2.8rem); letter-spacing: -.04em; }
+.form-actions { gap: .75rem; }
+@media (max-width: 768px) {
+  .orcamento-container { padding: 0; }
+  .form-section { padding: .95rem; border-radius: 14px; margin-bottom: .9rem; }
+  .section-header { align-items: center; }
+  .section-header h3 { min-width: 0; }
+  .section-header p-button ::ng-deep button { min-height: 42px; }
+  .item-grid, .item-grid-servico { gap: .7rem; }
+  .item-row { background: #f9fbf9; padding: .85rem; }
+  .valor-total-destaque { margin: 1rem 0; padding: 1.15rem; }
+  .form-actions {
+    margin: 1rem -.75rem -.75rem;
+    padding: .75rem .75rem calc(.75rem + env(safe-area-inset-bottom));
+    border-radius: 14px 14px 0 0;
+    background: rgba(255,255,255,.97);
+  }
+}
