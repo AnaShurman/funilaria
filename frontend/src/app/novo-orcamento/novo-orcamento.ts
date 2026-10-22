@@ -60,14 +60,14 @@ export class NovoOrcamento implements OnInit {
   initForm(): void {
     this.orcamentoForm = this.fb.group({
       clienteNome: ['', [Validators.required, Validators.minLength(3)]],
-      clienteTelefone: ['', Validators.required],
+      clienteTelefone: [''],
       clienteEmail: ['', [Validators.email]],
-      veiculoModelo: ['', Validators.required],
-      veiculoPlaca: ['', Validators.required],
-      veiculoAno: ['', Validators.required],
+      veiculoModelo: [''],
+      veiculoPlaca: [''],
+      veiculoAno: [''],
       materiais: this.fb.array([]),
       servicos: this.fb.array([]),
-      maoDeObra: [null, [Validators.required, Validators.min(0)]],
+      maoDeObra: [null, [Validators.min(0)]],
       observacoes: ['']
     });
 
@@ -83,9 +83,9 @@ export class NovoOrcamento implements OnInit {
 
   createMaterial(): FormGroup {
     return this.fb.group({
-      descricao: ['', Validators.required],
-      quantidade: [1, [Validators.required, Validators.min(1)]],
-      valorUnitario: [0, [Validators.required, Validators.min(0)]]
+      descricao: [''],
+      quantidade: [1, [Validators.min(1)]],
+      valorUnitario: [0, [Validators.min(0)]]
     });
   }
 
@@ -94,9 +94,7 @@ export class NovoOrcamento implements OnInit {
   }
 
   removeMaterial(index: number): void {
-    if (this.materiais.length > 1) {
-      this.materiais.removeAt(index);
-    }
+    this.materiais.removeAt(index);
   }
 
   // Serviços
@@ -106,8 +104,8 @@ export class NovoOrcamento implements OnInit {
 
   createServico(): FormGroup {
     return this.fb.group({
-      descricao: ['', Validators.required],
-      valor: [0, [Validators.required, Validators.min(0)]]
+      descricao: [''],
+      valor: [0, [Validators.min(0)]]
     });
   }
 
@@ -116,9 +114,7 @@ export class NovoOrcamento implements OnInit {
   }
 
   removeServico(index: number): void {
-    if (this.servicos.length > 1) {
-      this.servicos.removeAt(index);
-    }
+    this.servicos.removeAt(index);
   }
 
   // Cálculos
@@ -151,6 +147,8 @@ export class NovoOrcamento implements OnInit {
         
         const dadosOrcamento = {
           ...this.orcamentoForm.value,
+          materiais: this.materiais.value.filter((item: any) => item.descricao?.trim()),
+          servicos: this.servicos.value.filter((item: any) => item.descricao?.trim()),
           totalMateriais: this.calcularTotalMateriais(),
           totalServicos: this.calcularTotalServicos(),
           valorTotal: this.calcularTotal()

@@ -5,11 +5,11 @@ import { VeiculosService, VeiculoInsert } from '../veiculos/veiculos.service';
 
 export interface OrcamentoData {
   clienteNome: string;
-  clienteTelefone: string;
+  clienteTelefone?: string;
   clienteEmail?: string;
-  veiculoModelo: string;
-  veiculoPlaca: string;
-  veiculoAno: string;
+  veiculoModelo?: string;
+  veiculoPlaca?: string;
+  veiculoAno?: string;
   materiais: Array<{
     descricao: string;
     quantidade: number;
@@ -19,7 +19,7 @@ export interface OrcamentoData {
     descricao: string;
     valor: number;
   }>;
-  maoDeObra: number;
+  maoDeObra?: number | null;
   observacoes?: string;
   totalMateriais: number;
   totalServicos: number;
@@ -46,39 +46,37 @@ export class OrcamentoService {
       console.log('=== INICIANDO SALVAMENTO ===');
       console.log('Dados recebidos:', dados);
       
-      // 1. Check if cliente exists or create new one
-      console.log('1. Buscando cliente por telefone:', dados.clienteTelefone);
-      let cliente = await this.clientesService.getClienteByTelefone(dados.clienteTelefone);
-      console.log('Cliente encontrado:', cliente);
-      
-      if (!cliente) {
-        console.log('Cliente não encontrado, criando novo...');
-        const novoCliente: ClienteInsert = {
-          cliente_nome: dados.clienteNome,
-          cliente_telefone: dados.clienteTelefone,
-          cliente_email: dados.clienteEmail || null
-        };
-        console.log('Dados do novo cliente:', novoCliente);
-        cliente = await this.clientesService.createCliente(novoCliente);
-        console.log('Cliente criado:', cliente);
+      // 1. Only look up or create a client when a phone number is provided.
+      let cliente = null;
+      const telefone = dados.clienteTelefone?.trim();
+      if (telefone) {
+        cliente = await this.clientesService.getClienteByTelefone(telefone);
+        if (!cliente) {
+          const novoCliente: ClienteInsert = {
+            cliente_nome: dados.clienteNome,
+            cliente_telefone: telefone,
+            cliente_email: dados.clienteEmail || null
+          };
+          cliente = await this.clientesService.createCliente(novoCliente);
+        }
       }
 
-      // 2. Check if veiculo exists or create new one
-      console.log('2. Buscando veículo por placa:', dados.veiculoPlaca);
-      let veiculo = await this.veiculosService.getVeiculoByPlaca(dados.veiculoPlaca);
-      console.log('Veículo encontrado:', veiculo);
-      
-      if (!veiculo && cliente) {
-        console.log('Veículo não encontrado, criando novo...');
-        const novoVeiculo: VeiculoInsert = {
-          cliente_id: cliente.id,
-          veiculo_modelo: dados.veiculoModelo,
-          veiculo_placa: dados.veiculoPlaca,
-          veiculo_ano: dados.veiculoAno
-        };
-        console.log('Dados do novo veículo:', novoVeiculo);
-        veiculo = await this.veiculosService.createVeiculo(novoVeiculo);
-        console.log('Veículo criado:', veiculo);
+      // 2. Only look up or create a vehicle when all vehicle details are provided.
+      let veiculo = null;
+      const modelo = dados.veiculoModelo?.trim();
+      const placa = dados.veiculoPlaca?.trim();
+      const ano = dados.veiculoAno?.trim();
+      if (cliente && modelo && placa && ano) {
+        veiculo = await this.veiculosService.getVeiculoByPlaca(placa);
+        if (!veiculo) {
+          const novoVeiculo: VeiculoInsert = {
+            cliente_id: cliente.id,
+            veiculo_modelo: modelo,
+            veiculo_placa: placa,
+            veiculo_ano: ano
+          };
+          veiculo = await this.veiculosService.createVeiculo(novoVeiculo);
+        }
       }
 
       // 3. Insert main budget record
@@ -88,12 +86,12 @@ export class OrcamentoService {
           cliente_id: cliente?.id || null,
           veiculo_id: veiculo?.id || null,
           cliente_nome: dados.clienteNome,
-          cliente_telefone: dados.clienteTelefone,
+          cliente_telefone: dados.clienteTelefone?.trim() || null,
           cliente_email: dados.clienteEmail || null,
-          veiculo_modelo: dados.veiculoModelo,
-          veiculo_placa: dados.veiculoPlaca,
-          veiculo_ano: dados.veiculoAno,
-          mao_de_obra: dados.maoDeObra,
+          veiculo_modelo: dados.veiculoModelo?.trim() || null,
+          veiculo_placa: dados.veiculoPlaca?.trim() || null,
+          veiculo_ano: dados.veiculoAno?.trim() || null,
+          mao_de_obra: dados.maoDeObra || 0,
           total_materiais: dados.totalMateriais,
           total_servicos: dados.totalServicos,
           valor_total: dados.valorTotal,
@@ -107,8 +105,9 @@ export class OrcamentoService {
       if (orcamentoError) throw orcamentoError;
 
       // 4. Insert materials
-      if (dados.materiais && dados.materiais.length > 0) {
-        const materiais = dados.materiais.map(material => ({
+      const materiaisValidos = (dados.materiais || []).filter(material => material.descricao?.trim());
+      if (materiaisValidos.length > 0) {
+        const materiais = materiaisValidos.map(material => ({
           orcamento_id: orcamento.id,
           descricao: material.descricao,
           quantidade: material.quantidade,
@@ -123,8 +122,9 @@ export class OrcamentoService {
       }
 
       // 5. Insert services
-      if (dados.servicos && dados.servicos.length > 0) {
-        const servicos = dados.servicos.map(servico => ({
+      const servicosValidos = (dados.servicos || []).filter(servico => servico.descricao?.trim());
+      if (servicosValidos.length > 0) {
+        const servicos = servicosValidos.map(servico => ({
           orcamento_id: orcamento.id,
           descricao: servico.descricao,
           valor: servico.valor

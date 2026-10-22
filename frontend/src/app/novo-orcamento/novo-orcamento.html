@@ -31,16 +31,13 @@
           </div>
 
           <div class="form-field">
-            <label for="clienteTelefone">Telefone *</label>
+            <label for="clienteTelefone">Telefone</label>
             <input 
               pInputText 
               id="clienteTelefone" 
               formControlName="clienteTelefone"
               placeholder="(00) 00000-0000"
-              [class.p-invalid]="isFieldInvalid('clienteTelefone')" />
-            <small class="p-error" *ngIf="isFieldInvalid('clienteTelefone')">
-              Telefone é obrigatório
-            </small>
+              />
           </div>
 
           <div class="form-field">
@@ -64,42 +61,33 @@
         <h3>Dados do Veículo</h3>
         <div class="form-grid">
           <div class="form-field">
-            <label for="veiculoModelo">Modelo *</label>
+            <label for="veiculoModelo">Modelo</label>
             <input 
               pInputText 
               id="veiculoModelo" 
               formControlName="veiculoModelo"
               placeholder="Ex: Fiat Uno"
-              [class.p-invalid]="isFieldInvalid('veiculoModelo')" />
-            <small class="p-error" *ngIf="isFieldInvalid('veiculoModelo')">
-              Modelo é obrigatório
-            </small>
+              />
           </div>
 
           <div class="form-field">
-            <label for="veiculoPlaca">Placa *</label>
+            <label for="veiculoPlaca">Placa</label>
             <input 
               pInputText 
               id="veiculoPlaca" 
               formControlName="veiculoPlaca"
               placeholder="ABC-1234"
-              [class.p-invalid]="isFieldInvalid('veiculoPlaca')" />
-            <small class="p-error" *ngIf="isFieldInvalid('veiculoPlaca')">
-              Placa é obrigatória
-            </small>
+              />
           </div>
 
           <div class="form-field">
-            <label for="veiculoAno">Ano *</label>
+            <label for="veiculoAno">Ano</label>
             <input 
               pInputText 
               id="veiculoAno" 
               formControlName="veiculoAno"
               placeholder="2020"
-              [class.p-invalid]="isFieldInvalid('veiculoAno')" />
-            <small class="p-error" *ngIf="isFieldInvalid('veiculoAno')">
-              Ano é obrigatório
-            </small>
+              />
           </div>
         </div>
       </div>
@@ -122,7 +110,7 @@
           <div *ngFor="let material of materiais.controls; let i = index" [formGroupName]="i" class="item-row">
             <div class="item-grid">
               <div class="form-field">
-                <label>Descrição *</label>
+                <label>Descrição</label>
                 <input 
                   pInputText 
                   formControlName="descricao"
@@ -130,7 +118,7 @@
               </div>
 
               <div class="form-field">
-                <label>Quantidade *</label>
+                <label>Quantidade</label>
                 <p-inputNumber
                   formControlName="quantidade"
                   [min]="1"
@@ -139,7 +127,7 @@
               </div>
 
               <div class="form-field">
-                <label>Valor Unitário (R$) *</label>
+                <label>Valor Unitário (R$)</label>
                 <p-inputNumber
                   formControlName="valorUnitario"
                   mode="currency"
@@ -161,7 +149,6 @@
                   severity="danger"
                   size="small"
                   type="button"
-                  [disabled]="materiais.length === 1"
                   (onClick)="removeMaterial(i)">
                 </p-button>
               </div>
@@ -193,7 +180,7 @@
           <div *ngFor="let servico of servicos.controls; let i = index" [formGroupName]="i" class="item-row">
             <div class="item-grid-servico">
               <div class="form-field">
-                <label>Descrição do Serviço *</label>
+                <label>Descrição do Serviço</label>
                 <input 
                   pInputText 
                   formControlName="descricao"
@@ -201,7 +188,7 @@
               </div>
 
               <div class="form-field">
-                <label>Valor (R$) *</label>
+                <label>Valor (R$)</label>
                 <p-inputNumber
                   formControlName="valor"
                   mode="currency"
@@ -216,7 +203,6 @@
                   severity="danger"
                   size="small"
                   type="button"
-                  [disabled]="servicos.length === 1"
                   (onClick)="removeServico(i)">
                 </p-button>
               </div>
@@ -235,18 +221,14 @@
         <h3>Mão de Obra</h3>
         <div class="form-grid">
           <div class="form-field">
-            <label for="maoDeObra">Valor da Mão de Obra (R$) *</label>
+            <label for="maoDeObra">Valor da Mão de Obra (R$)</label>
             <p-inputNumber
               id="maoDeObra"
               formControlName="maoDeObra"
               mode="currency"
               currency="BRL"
               locale="pt-BR"
-              [class.p-invalid]="isFieldInvalid('maoDeObra')">
             </p-inputNumber>
-            <small class="p-error" *ngIf="isFieldInvalid('maoDeObra')">
-              Valor da mão de obra é obrigatório
-            </small>
           </div>
         </div>
       </div>
