@@ -183,6 +183,15 @@
                 (onClick)="visualizarOrcamento(orcamento)"
                 pTooltip="Visualizar">
               </p-button>
+              <p-button
+                icon="pi pi-whatsapp"
+                [rounded]="true"
+                [text]="true"
+                severity="success"
+                size="small"
+                (onClick)="compartilharOrcamentoNoWhatsApp(orcamento)"
+                pTooltip="Preparar PDF para enviar pelo WhatsApp">
+              </p-button>
               <p-button 
                 icon="pi pi-trash" 
                 [rounded]="true"
