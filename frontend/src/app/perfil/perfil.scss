@@ -132,3 +132,45 @@
 }
 
 
+
+
+/* Workshop profile visual refresh */
+:host { display: block; }
+.card.flex.justify-center { max-width: 1100px; margin: 0 auto; padding: clamp(.25rem, 1.5vw, 1rem); }
+.oficina-profile { padding: .5rem; gap: 1.5rem; }
+.oficina-profile .logo-section {
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: #f7faf8;
+  border: 1px solid #e3ebe5;
+}
+.oficina-profile .logo-section .logo-container {
+  width: min(100%, 360px);
+  min-height: 220px;
+  border: 1px dashed #b8d2c2;
+  border-radius: 16px;
+  background: #fff;
+}
+.oficina-profile .info-section h3 {
+  color: #183d30;
+  text-align: left;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+.oficina-profile .info-section .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+.oficina-profile .info-section .info-grid .info-item {
+  padding: 1rem;
+  border-radius: 13px;
+  border-color: #e1eae3;
+  background: #fff;
+}
+.oficina-profile .info-section .info-grid .info-item strong { color: #718078; font-size: .72rem; letter-spacing: .07em; }
+.oficina-profile .info-section .info-grid .info-item span { color: #183d30; overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  .card.flex.justify-center { padding: 0; }
+  .oficina-profile { padding: 0; }
+  .oficina-profile .logo-section { padding: .85rem; }
+  .oficina-profile .info-section .info-grid { grid-template-columns: 1fr; }
+  .oficina-profile .info-section h3 { font-size: 1.2rem; }
+}
