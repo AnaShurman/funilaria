@@ -14,8 +14,8 @@ export class PdfService {
       style: 'currency', currency: 'BRL'
     }).format(Number(valor) || 0);
     const adicionar = (texto: unknown = '') => {
-      const limpo = String(texto ?? '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
-        .replace(/[^\\x20-\\x7E]/g, '?');
+      const limpo = String(texto ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\x20-\x7E]/g, '?');
       const largura = 88;
       if (!limpo) { linhas.push(''); return; }
       for (let i = 0; i < limpo.length; i += largura) linhas.push(limpo.slice(i, i + largura));
@@ -59,7 +59,7 @@ export class PdfService {
     if (dados.observacoes) {
       adicionar('');
       adicionar('OBSERVACOES');
-      String(dados.observacoes).split(/\\r?\\n/).forEach((linha: string) => adicionar(linha));
+      String(dados.observacoes).split(/\r?\n/).forEach((linha: string) => adicionar(linha));
     }
     adicionar('');
     adicionar('VALOR TOTAL DO ORCAMENTO: ' + moeda(dados.valorTotal));
@@ -72,10 +72,9 @@ export class PdfService {
     for (let i = 0; i < linhas.length; i += paginaLinhas) paginas.push(linhas.slice(i, i + paginaLinhas));
     if (!paginas.length) paginas.push(['ORCAMENTO']);
     const objetos: string[] = [];
-    const catalogId = 1, pagesId = 2, fontId = 3;
-    objetos[catalogId] = '<< /Type /Catalog /Pages 2 0 R >>';
-    objetos[pagesId] = '';
-    objetos[fontId] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
+    objetos[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+    objetos[2] = '';
+    objetos[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';
     const kids: string[] = [];
     paginas.forEach((pagina, index) => {
       const pageId = 4 + index * 2;
@@ -84,25 +83,25 @@ export class PdfService {
       const comandos = ['BT', '/F1 10 Tf', '50 790 Td', '14 TL'];
       pagina.forEach((linha, linhaIndex) => {
         if (linhaIndex > 0) comandos.push('T*');
-        const segura = linha.replace(/\\\\/g, '\\\\').replace(/\\(/g, '\\(').replace(/\\)/g, '\\)');
+        const segura = linha.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
         comandos.push('(' + segura + ') Tj');
       });
       comandos.push('ET');
-      const stream = comandos.join('\\n');
+      const stream = comandos.join('\n');
       objetos[pageId] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ' + contentId + ' 0 R >>';
-      objetos[contentId] = '<< /Length ' + stream.length + ' >>\\nstream\\n' + stream + '\\nendstream';
+      objetos[contentId] = '<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream';
     });
-    objetos[pagesId] = '<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + paginas.length + ' >>';
-    let pdf = '%PDF-1.4\\n';
+    objetos[2] = '<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + paginas.length + ' >>';
+    let pdf = '%PDF-1.4\n';
     const offsets = [0];
     for (let i = 1; i < objetos.length; i++) {
       offsets[i] = pdf.length;
-      pdf += i + ' 0 obj\\n' + objetos[i] + '\\nendobj\\n';
+      pdf += i + ' 0 obj\n' + objetos[i] + '\nendobj\n';
     }
     const xrefOffset = pdf.length;
-    pdf += 'xref\\n0 ' + objetos.length + '\\n0000000000 65535 f \\n';
-    for (let i = 1; i < objetos.length; i++) pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \\n';
-    pdf += 'trailer\\n<< /Size ' + objetos.length + ' /Root 1 0 R >>\\nstartxref\\n' + xrefOffset + '\\n%%EOF';
+    pdf += 'xref\n0 ' + objetos.length + '\n0000000000 65535 f \n';
+    for (let i = 1; i < objetos.length; i++) pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+    pdf += 'trailer\n<< /Size ' + objetos.length + ' /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF';
     return new Blob([pdf], { type: 'application/pdf' });
   }
 
