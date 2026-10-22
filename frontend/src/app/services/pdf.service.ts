@@ -410,11 +410,11 @@ export class PdfService {
         <div class="valor-destaque">
           <label>VALOR TOTAL DO ORÇAMENTO</label>
           <div class="valor">${this.formatarMoeda(dados.valorTotal || 0)}</div>
+          ${this.resumoValores(dados) ? `
           <div style="font-size: 14px; margin-top: 10px; opacity: 0.9;">
-            Materiais: ${this.formatarMoeda(dados.totalMateriais || 0)} +
-            Serviços: ${this.formatarMoeda(dados.totalServicos || 0)} +
-            Mão de Obra: ${this.formatarMoeda(dados.maoDeObra || 0)}
+            ${this.resumoValores(dados)}
           </div>
+          ` : ''}
         </div>
 
         <div class="footer">
@@ -439,6 +439,19 @@ export class PdfService {
     if (valor === null || valor === undefined) return '';
     const texto = String(valor).trim();
     return texto === 'null' || texto === 'undefined' ? '' : texto;
+  }
+
+  private resumoValores(dados: any): string {
+    const itens = [
+      { nome: 'Materiais', valor: Number(dados.totalMateriais) || 0 },
+      { nome: 'Serviços', valor: Number(dados.totalServicos) || 0 },
+      { nome: 'Mão de Obra', valor: Number(dados.maoDeObra) || 0 }
+    ];
+
+    return itens
+      .filter(item => item.valor > 0)
+      .map(item => `${item.nome}: ${this.formatarMoeda(item.valor)}`)
+      .join(' + ');
   }
 
   private formatarData(data: string): string {
