@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
@@ -31,6 +31,11 @@ export class Sidebar {
 
   closeMenu(): void {
     this.isMenuOpen = false;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    this.closeMenu();
   }
 
   async logout(): Promise<void> {
