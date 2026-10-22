@@ -184,3 +184,30 @@ body .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link.p-menuitem
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+
+/* Mobile layout refresh: consistent spacing, readable cards and safe-area support. */
+@media (max-width: 768px) {
+  html, body { min-width: 320px; }
+  body { line-height: 1.55; }
+  .p-card, .p-panel { overflow: hidden; }
+  .p-panel .p-panel-header { gap: 0.75rem; font-size: 1.05rem; }
+  .p-panel .p-panel-content { padding: 1rem !important; }
+  .p-button { justify-content: center; }
+  .p-button .p-button-label { white-space: normal; }
+  .p-inputtext, .p-inputnumber, .p-dropdown, .p-calendar { max-width: 100%; }
+  .p-inputnumber { display: inline-flex; width: 100%; }
+  .p-inputnumber-input { min-width: 0; width: 100%; }
+  .p-datatable { max-width: 100%; }
+  .p-datatable-wrapper { border-radius: 8px; }
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td { padding: 0.75rem 0.85rem !important; }
+  .p-paginator .p-paginator-current { width: 100%; text-align: center; order: 10; }
+  .p-toast { max-width: calc(100vw - 2rem) !important; }
+}
+@media (max-width: 420px) {
+  .p-panel .p-panel-header { padding: 0.85rem !important; }
+  .p-panel .p-panel-content { padding: 0.75rem !important; }
+  .p-button { padding-inline: 0.8rem !important; }
+}
+
