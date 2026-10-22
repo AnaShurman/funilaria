@@ -145,7 +145,8 @@
 
               <div class="form-field button-field">
                 <p-button 
-                  icon="pi pi-trash" 
+                  icon="pi pi-trash"
+                  [attr.aria-label]="'Remover material ' + (i + 1)"
                   severity="danger"
                   size="small"
                   type="button"
@@ -199,7 +200,8 @@
 
               <div class="form-field button-field">
                 <p-button 
-                  icon="pi pi-trash" 
+                  icon="pi pi-trash"
+                  [attr.aria-label]="'Remover serviço ' + (i + 1)"
                   severity="danger"
                   size="small"
                   type="button"
