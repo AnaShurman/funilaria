@@ -16,6 +16,7 @@ export class Login {
   errorMessage = '';
   isLoading = false;
   showPassword = false;
+  readonly currentYear = new Date().getFullYear();
 
   constructor(private auth: AuthService) {}
 
