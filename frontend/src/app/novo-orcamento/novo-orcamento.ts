@@ -120,15 +120,25 @@ export class NovoOrcamento implements OnInit {
   // Cálculos
   calcularTotalMateriais(): number {
     return this.materiais.controls.reduce((total, material) => {
-      const quantidade = material.get('quantidade')?.value || 0;
-      const valorUnitario = material.get('valorUnitario')?.value || 0;
+      const descricao = material.get('descricao')?.value?.trim();
+      if (!descricao) {
+        return total;
+      }
+
+      const quantidade = Number(material.get('quantidade')?.value) || 0;
+      const valorUnitario = Number(material.get('valorUnitario')?.value) || 0;
       return total + (quantidade * valorUnitario);
     }, 0);
   }
 
   calcularTotalServicos(): number {
     return this.servicos.controls.reduce((total, servico) => {
-      return total + (servico.get('valor')?.value || 0);
+      const descricao = servico.get('descricao')?.value?.trim();
+      if (!descricao) {
+        return total;
+      }
+
+      return total + (Number(servico.get('valor')?.value) || 0);
     }, 0);
   }
 
@@ -145,10 +155,13 @@ export class NovoOrcamento implements OnInit {
       try {
         console.log('🚀 Iniciando salvamento do orçamento...');
         
+        const materiaisPreenchidos = this.materiais.value.filter((item: any) => item.descricao?.trim());
+        const servicosPreenchidos = this.servicos.value.filter((item: any) => item.descricao?.trim());
+
         const dadosOrcamento = {
           ...this.orcamentoForm.value,
-          materiais: this.materiais.value.filter((item: any) => item.descricao?.trim()),
-          servicos: this.servicos.value.filter((item: any) => item.descricao?.trim()),
+          materiais: materiaisPreenchidos,
+          servicos: servicosPreenchidos,
           totalMateriais: this.calcularTotalMateriais(),
           totalServicos: this.calcularTotalServicos(),
           valorTotal: this.calcularTotal()
