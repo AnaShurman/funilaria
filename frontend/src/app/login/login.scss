@@ -40,32 +40,32 @@ label { margin: 0 0 9px; color: #273449; font-size: 13px; font-weight: 700; }
 .submit-button:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
 .error-message { display: flex; gap: 8px; align-items: flex-start; margin: -6px 0 16px; color: #b42318; font-size: 13px; line-height: 1.5; }
 .security-note { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 25px 0 0; color: #7b8799; font-size: 11px; }
-.security-note i { color: #16a36a; }
+.security-note i { color: #2563eb; }
 footer { margin-top: 26px; color: #8792a4; font-size: 11px; text-align: center; }
 @media (max-width: 480px) { .login-card { padding: 30px 24px; border-radius: 20px; } }
 
 
 /* Brand alignment with the authenticated app */
 .login-page {
-  background: radial-gradient(ellipse at 15% 5%, #d8f0e3 0, transparent 45%),
-              linear-gradient(145deg, #f6faf7 0%, #eaf2ed 100%);
+  background: radial-gradient(ellipse at 15% 5%, #dbeafe 0, transparent 45%),
+              linear-gradient(145deg, #f7f9fc 0%, #edf2f8 100%);
 }
 .login-card {
-  border-color: #dfebe3;
+  border-color: #dbeafe;
   border-radius: 24px;
-  box-shadow: 0 24px 70px rgba(21, 65, 44, .12);
+  box-shadow: 0 24px 70px rgba(37, 99, 235, .12);
 }
 .brand-mark {
-  background: linear-gradient(145deg, #0b9468, #075b42);
-  box-shadow: 0 8px 20px rgba(8,127,91,.22);
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  box-shadow: 0 8px 20px rgba(37,99,235,.22);
 }
-.eyebrow { color: #087f5b; }
-.input-wrap:focus-within { border-color: #0b9468; box-shadow: 0 0 0 3px rgba(8,127,91,.12); }
+.eyebrow { color: #2563eb; }
+.input-wrap:focus-within { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
 .submit-button {
-  background: linear-gradient(100deg, #0b9468, #075b42);
-  box-shadow: 0 8px 18px rgba(8,127,91,.2);
+  background: linear-gradient(100deg, #2563eb, #1d4ed8);
+  box-shadow: 0 8px 18px rgba(37,99,235,.2);
 }
-.security-note i { color: #0b9468; }
+.security-note i { color: #2563eb; }
 @media (max-width: 480px) {
   .login-page { justify-content: flex-start; padding: max(3rem, env(safe-area-inset-top)) 1rem 2rem; }
   .login-card { padding: 1.6rem 1.25rem; border-radius: 20px; }
