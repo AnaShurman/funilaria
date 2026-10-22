@@ -240,27 +240,63 @@ export class Home implements OnInit {
   }
 
   async compartilharOrcamentoNoWhatsApp(orcamento: any): Promise<void> {
-    // Open WhatsApp synchronously from the click to reduce popup-blocking risk.
-    const mensagem = [
-      `Orçamento nº ${orcamento.numero_orcamento}`,
-      `Cliente: ${orcamento.cliente_nome || 'Não informado'}`,
-      `Veículo: ${orcamento.veiculo_modelo || 'Não informado'}`,
-      `Valor total: ${this.formatarMoeda(orcamento.valor_total)}`,
-      '',
-      'Vou anexar o PDF deste orçamento para guardar e encaminhar depois.'
-    ].join('\n');
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    try {
+      const completo = await this.orcamentoService.obterOrcamento(orcamento.id);
+      const dadosPDF = {
+        numeroOrcamento: completo.numero_orcamento,
+        clienteNome: completo.cliente_nome,
+        clienteTelefone: completo.cliente_telefone,
+        clienteEmail: completo.cliente_email,
+        veiculoModelo: completo.veiculo_modelo,
+        veiculoPlaca: completo.veiculo_placa,
+        veiculoAno: completo.veiculo_ano,
+        materiais: completo.materiais || [],
+        servicos: completo.servicos || [],
+        maoDeObra: completo.mao_de_obra,
+        observacoes: completo.observacoes,
+        totalMateriais: completo.total_materiais,
+        totalServicos: completo.total_servicos,
+        valorTotal: completo.valor_total
+      };
+      const pdf = await this.pdfService.gerarOrcamentoPDFBlob(dadosPDF, this.oficinaInfo);
+      const nomeArquivo = 'orcamento-' + (completo.numero_orcamento || completo.id) + '.pdf';
+      const arquivo = new File([pdf], nomeArquivo, { type: 'application/pdf' });
+      const navegador = navigator as Navigator & {
+        canShare?: (data?: ShareData) => boolean;
+        share?: (data?: ShareData) => Promise<void>;
+      };
 
-    // Open the existing printable budget view; the user can save it as PDF
-    // and attach that file in their WhatsApp conversation with themselves.
-    await this.visualizarOrcamento(orcamento);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Finalize o envio',
-      detail: 'Na janela do orçamento, use Imprimir > Salvar como PDF. Depois, anexe o arquivo na conversa do WhatsApp aberta.',
-      life: 7000
-    });
+      if (navegador.share && navegador.canShare?.({ files: [arquivo] })) {
+        await navegador.share({
+          files: [arquivo],
+          title: 'Orçamento ' + (completo.numero_orcamento || ''),
+          text: 'Orçamento em PDF para encaminhar pelo WhatsApp.'
+        });
+        return;
+      }
+
+      const url = URL.createObjectURL(pdf);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = nomeArquivo;
+      link.click();
+      URL.revokeObjectURL(url);
+      this.messageService.add({
+        severity: 'info',
+        summary: 'PDF baixado',
+        detail: 'Este navegador não oferece compartilhamento de arquivos. Anexe o PDF baixado no WhatsApp.',
+        life: 7000
+      });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+      console.error('Erro ao compartilhar PDF do orçamento:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível gerar ou compartilhar o PDF deste orçamento.',
+        life: 5000
+      });
+    }
   }
 
   async deletarOrcamento(id: string) {
