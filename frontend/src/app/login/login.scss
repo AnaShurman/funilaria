@@ -43,3 +43,30 @@ label { margin: 0 0 9px; color: #273449; font-size: 13px; font-weight: 700; }
 .security-note i { color: #16a36a; }
 footer { margin-top: 26px; color: #8792a4; font-size: 11px; text-align: center; }
 @media (max-width: 480px) { .login-card { padding: 30px 24px; border-radius: 20px; } }
+
+
+/* Brand alignment with the authenticated app */
+.login-page {
+  background: radial-gradient(ellipse at 15% 5%, #d8f0e3 0, transparent 45%),
+              linear-gradient(145deg, #f6faf7 0%, #eaf2ed 100%);
+}
+.login-card {
+  border-color: #dfebe3;
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(21, 65, 44, .12);
+}
+.brand-mark {
+  background: linear-gradient(145deg, #0b9468, #075b42);
+  box-shadow: 0 8px 20px rgba(8,127,91,.22);
+}
+.eyebrow { color: #087f5b; }
+.input-wrap:focus-within { border-color: #0b9468; box-shadow: 0 0 0 3px rgba(8,127,91,.12); }
+.submit-button {
+  background: linear-gradient(100deg, #0b9468, #075b42);
+  box-shadow: 0 8px 18px rgba(8,127,91,.2);
+}
+.security-note i { color: #0b9468; }
+@media (max-width: 480px) {
+  .login-page { justify-content: flex-start; padding: max(3rem, env(safe-area-inset-top)) 1rem 2rem; }
+  .login-card { padding: 1.6rem 1.25rem; border-radius: 20px; }
+}
