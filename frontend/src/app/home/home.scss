@@ -202,6 +202,8 @@
   background: transparent;
 }
 .dashboard-header {
+  position: relative;
+  padding-top: 1rem;
   gap: 1rem;
   margin-bottom: 1.6rem;
   align-items: center;
@@ -215,7 +217,9 @@
   content: "VISÃO GERAL";
   display: block;
   position: absolute;
-  transform: translateY(-1.8rem);
+  top: 0;
+  left: 0;
+  transform: none;
   color: var(--primary-color);
   font-size: .68rem;
   font-weight: 850;
