@@ -302,3 +302,15 @@ button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Temporary blue background while the final dashboard styling is refined. */
+:root {
+  --bg-secondary: #eef4ff;
+  --bg-tertiary: #e2ebfb;
+  --border-color: #d7e2f3;
+  --border-light: #e5ecf8;
+}
+html, body, .app-container, .dashboard-container {
+  background-color: #eef4ff !important;
+}
