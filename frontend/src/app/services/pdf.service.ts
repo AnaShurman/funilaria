@@ -49,7 +49,7 @@ export class PdfService {
       <html>
       <head>
         <meta charset="UTF-8">
-        <title>Orçamento - ${dados.clienteNome}</title>
+        <title>Orçamento - ${this.texto(dados.clienteNome)}</title>
         <style>
           * {
             margin: 0;
@@ -301,16 +301,16 @@ export class PdfService {
           <div class="info-grid">
             <div class="info-item">
               <label>Nome</label>
-              <span>${dados.clienteNome}</span>
+              <span>${this.texto(dados.clienteNome)}</span>
             </div>
             <div class="info-item">
               <label>Telefone</label>
-              <span>${dados.clienteTelefone}</span>
+              <span>${this.texto(dados.clienteTelefone)}</span>
             </div>
             ${dados.clienteEmail ? `
             <div class="info-item full-width">
               <label>E-mail</label>
-              <span>${dados.clienteEmail}</span>
+              <span>${this.texto(dados.clienteEmail)}</span>
             </div>
             ` : ''}
           </div>
@@ -321,15 +321,15 @@ export class PdfService {
           <div class="info-grid">
             <div class="info-item">
               <label>Modelo</label>
-              <span>${dados.veiculoModelo}</span>
+              <span>${this.texto(dados.veiculoModelo)}</span>
             </div>
             <div class="info-item">
               <label>Placa</label>
-              <span>${dados.veiculoPlaca}</span>
+              <span>${this.texto(dados.veiculoPlaca)}</span>
             </div>
             <div class="info-item">
               <label>Ano</label>
-              <span>${dados.veiculoAno}</span>
+              <span>${this.texto(dados.veiculoAno)}</span>
             </div>
           </div>
         </div>
@@ -348,8 +348,8 @@ export class PdfService {
             <tbody>
               ${dados.materiais?.map((material: any) => `
                 <tr>
-                  <td>${material.descricao}</td>
-                  <td style="text-align: center;">${material.quantidade}</td>
+                  <td>${this.texto(material.descricao)}</td>
+                  <td style="text-align: center;">${this.texto(material.quantidade)}</td>
                   <td style="text-align: right;">${this.formatarMoeda(material.valorUnitario)}</td>
                   <td style="text-align: right;">${this.formatarMoeda(material.quantidade * material.valorUnitario)}</td>
                 </tr>
@@ -376,7 +376,7 @@ export class PdfService {
             <tbody>
               ${dados.servicos?.map((servico: any) => `
                 <tr>
-                  <td>${servico.descricao}</td>
+                  <td>${this.texto(servico.descricao)}</td>
                   <td style="text-align: right;">${this.formatarMoeda(servico.valor)}</td>
                 </tr>
               `).join('') || '<tr><td colspan="2">Nenhum serviço cadastrado</td></tr>'}
@@ -402,7 +402,7 @@ export class PdfService {
         <div class="section">
           <div class="section-title">Observações</div>
           <div class="description-box">
-            ${dados.observacoes}
+            ${this.texto(dados.observacoes)}
           </div>
         </div>
         ` : ''}
@@ -433,6 +433,12 @@ export class PdfService {
     const dia = String(data.getDate()).padStart(2, '0');
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     return `${ano}${mes}${dia}-${random}`;
+  }
+
+  private texto(valor: unknown): string {
+    if (valor === null || valor === undefined) return '';
+    const texto = String(valor).trim();
+    return texto === 'null' || texto === 'undefined' ? '' : texto;
   }
 
   private formatarData(data: string): string {
