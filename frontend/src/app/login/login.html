@@ -1,0 +1,42 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <div class="brand-mark" aria-hidden="true"><i class="pi pi-car"></i></div>
+    <p class="eyebrow">ÁREA RESTRITA</p>
+    <h1 id="login-title">Bem-vindo de volta</h1>
+    <p class="subtitle">Entre para acessar o sistema da sua oficina.</p>
+
+    <form (ngSubmit)="submit()" #loginForm="ngForm">
+      <label for="email">E-mail</label>
+      <div class="input-wrap">
+        <i class="pi pi-envelope" aria-hidden="true"></i>
+        <input id="email" name="email" type="email" [(ngModel)]="email"
+          placeholder="voce@oficina.com.br" autocomplete="username"
+          required email [disabled]="isLoading" />
+      </div>
+
+      <label for="password">Senha</label>
+      <div class="input-wrap">
+        <i class="pi pi-lock" aria-hidden="true"></i>
+        <input id="password" name="password" [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="password" placeholder="Digite sua senha"
+          autocomplete="current-password" required [disabled]="isLoading" />
+        <button class="password-toggle" type="button" (click)="showPassword = !showPassword"
+          [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Mostrar senha'">
+          <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+        </button>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage" role="alert">
+        <i class="pi pi-exclamation-circle" aria-hidden="true"></i> {{ errorMessage }}
+      </p>
+
+      <button class="submit-button" type="submit" [disabled]="loginForm.invalid || isLoading">
+        <i [class]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"></i>
+        {{ isLoading ? 'Entrando...' : 'Entrar com segurança' }}
+      </button>
+    </form>
+
+    <p class="security-note"><i class="pi pi-shield" aria-hidden="true"></i> Acesso protegido por autenticação segura.</p>
+  </section>
+  <footer>© {{ currentYear }} Funilaria · Sistema de gestão da oficina</footer>
+</main>

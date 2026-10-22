@@ -214,3 +214,18 @@
   }
 }
 
+
+
+.logout-button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: var(--primary-color);
+  background: var(--bg-tertiary);
+}

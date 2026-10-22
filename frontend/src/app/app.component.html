@@ -1,6 +1,11 @@
-<div class="app-container">
-  <app-sidebar />
-  <main class="main-content">
-    <router-outlet />
-  </main>
-</div>
+<ng-container *ngIf="isAuthenticated; else publicPage">
+  <div class="app-container">
+    <app-sidebar />
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </div>
+</ng-container>
+<ng-template #publicPage>
+  <router-outlet />
+</ng-template>
