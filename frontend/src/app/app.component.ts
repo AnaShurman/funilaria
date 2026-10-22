@@ -14,7 +14,7 @@ import { SupabaseService } from './dataBase/supabase.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
-  private authSubscription?: Subscription;
+  private authSubscription?: ReturnType<SupabaseService['auth']['onAuthStateChange']>['data']['subscription'];
   private navigationSubscription?: Subscription;
 
   constructor(private supabase: SupabaseService, private router: Router) {}
