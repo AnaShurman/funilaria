@@ -2,230 +2,100 @@
 .menu-toggle {
   display: none;
   position: fixed;
-  top: 1rem;
-  left: 1rem;
+  top: max(0.75rem, env(safe-area-inset-top));
+  left: max(0.75rem, env(safe-area-inset-left));
   z-index: 1100;
   background: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 48px;
   height: 48px;
   cursor: pointer;
   box-shadow: var(--shadow-md);
   transition: all var(--transition-duration) ease;
-
-  i {
-    font-size: 1.5rem;
-  }
-
-  &:hover {
-    background: var(--primary-color-dark);
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
+  i { font-size: 1.5rem; }
+  &:hover { background: var(--primary-color-dark); transform: scale(1.03); }
+  &:active { transform: scale(0.97); }
+  &:focus-visible { outline: 3px solid var(--primary-light); outline-offset: 3px; }
 }
 
 /* Overlay para mobile */
 .sidebar-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  animation: fadeIn 0.3s ease;
+  display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px); z-index: 999; animation: fadeIn 0.2s ease;
 }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .sidebar {
-  width: 260px;
-  height: 100vh;
-  background: var(--bg-primary);
-  border-right: 1px solid var(--border-light);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease;
+  width: 260px; height: 100vh; height: 100dvh; background: var(--bg-primary);
+  border-right: 1px solid var(--border-light); display: flex; flex-direction: column;
+  position: fixed; left: 0; top: 0; z-index: 1000; box-shadow: var(--shadow-md);
+  transition: transform 0.25s ease;
 }
-
 .sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--border-light);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+  padding: 1.5rem; border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; justify-content: space-between;
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--primary-color);
-    font-size: 1.25rem;
-    font-weight: 700;
-
-    i {
-      font-size: 2rem;
-    }
-
-    .logo-text {
-      color: var(--text-primary);
-    }
+    display: flex; align-items: center; gap: 0.75rem; color: var(--primary-color);
+    font-size: 1.25rem; font-weight: 700;
+    i { font-size: 2rem; }
+    .logo-text { color: var(--text-primary); }
   }
-
   .close-btn {
-    display: none;
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
+    display: none; background: transparent; border: none; color: var(--text-secondary);
+    cursor: pointer; padding: 0.5rem; border-radius: 8px; min-width: 44px; min-height: 44px;
     transition: all var(--transition-duration) ease;
-
-    i {
-      font-size: 1.5rem;
-    }
-
-    &:hover {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-    }
+    i { font-size: 1.5rem; }
+    &:hover { background: var(--bg-tertiary); color: var(--text-primary); }
   }
 }
-
 .sidebar-nav {
-  flex: 1;
-  padding: 1rem 0;
-  overflow-y: auto;
-
+  flex: 1; padding: 1rem 0; overflow-y: auto;
   .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: all var(--transition-duration) ease;
-    font-weight: 500;
-    border-left: 3px solid transparent;
-
-    i {
-      font-size: 1.25rem;
-      width: 24px;
-      text-align: center;
-    }
-
-    &:hover {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-    }
-
+    display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1.5rem;
+    min-height: 48px; color: var(--text-secondary); text-decoration: none;
+    transition: all var(--transition-duration) ease; font-weight: 500; border-left: 3px solid transparent;
+    i { font-size: 1.25rem; width: 24px; text-align: center; }
+    &:hover { background: var(--bg-tertiary); color: var(--text-primary); }
     &.active {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--primary-color);
-      border-left-color: var(--primary-color);
-      font-weight: 600;
-
-      i {
-        color: var(--primary-color);
-      }
+      background: rgba(16, 185, 129, 0.1); color: var(--primary-color);
+      border-left-color: var(--primary-color); font-weight: 600;
+      i { color: var(--primary-color); }
     }
   }
 }
-
-.sidebar-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--border-light);
-
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-
-    i {
-      font-size: 1.5rem;
-      color: var(--primary-color);
-    }
+.sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-light);
+  .user-info { display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-size: 0.875rem;
+    i { font-size: 1.5rem; color: var(--primary-color); }
   }
 }
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Scrollbar para o menu */
-.sidebar-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar-nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
-/* Responsivo para mobile */
 @media (max-width: 768px) {
-  .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .sidebar-overlay {
-    display: block;
-  }
-
+  .menu-toggle { display: flex; align-items: center; justify-content: center; }
+  .sidebar-overlay { display: block; }
   .sidebar {
-    transform: translateX(-100%);
-
-    &.open {
-      transform: translateX(0);
-    }
+    width: min(82vw, 300px);
+    transform: translateX(-105%);
+    padding-bottom: env(safe-area-inset-bottom);
+    &.open { transform: translateX(0); }
   }
-
-  .sidebar-header {
-    .close-btn {
-      display: block;
-    }
+  .sidebar-header { padding: 1rem 1rem 1rem 4.5rem; min-height: 72px;
+    .close-btn { display: flex; align-items: center; justify-content: center; }
   }
+  .sidebar-nav .nav-item { padding: 0.9rem 1.25rem; }
 }
 
-
+@media (min-width: 769px) {
+  .sidebar-overlay { display: none !important; }
+}
 
 .logout-button {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
+  width: 100%; border: 0; background: transparent; font: inherit; text-align: left; cursor: pointer;
+  min-height: 44px;
 }
-
-.logout-button:hover {
-  color: var(--primary-color);
-  background: var(--bg-tertiary);
-}
+.logout-button:hover { color: var(--primary-color); background: var(--bg-tertiary); }
