@@ -60,14 +60,14 @@ export class NovoOrcamento implements OnInit {
   initForm(): void {
     this.orcamentoForm = this.fb.group({
       clienteNome: ['', [Validators.required, Validators.minLength(3)]],
-      clienteTelefone: ['', Validators.required],
+      clienteTelefone: [''],
       clienteEmail: ['', [Validators.email]],
-      veiculoModelo: ['', Validators.required],
-      veiculoPlaca: ['', Validators.required],
-      veiculoAno: ['', Validators.required],
+      veiculoModelo: [''],
+      veiculoPlaca: [''],
+      veiculoAno: [''],
       materiais: this.fb.array([]),
       servicos: this.fb.array([]),
-      maoDeObra: [null, [Validators.required, Validators.min(0)]],
+      maoDeObra: [null, [Validators.min(0)]],
       observacoes: ['']
     });
 
