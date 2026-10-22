@@ -20,3 +20,30 @@
 }
 
 
+
+
+/* Keep page content clear of the fixed mobile menu and within the viewport. */
+.app-container {
+  min-width: 0;
+  width: 100%;
+}
+
+.main-content {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    width: 100%;
+    padding: calc(5rem + env(safe-area-inset-top)) 0.75rem calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 380px) {
+  .main-content {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
