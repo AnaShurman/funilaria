@@ -108,6 +108,7 @@
       </div>
       <div class="mobile-quote-actions">
         <p-button label="Visualizar" icon="pi pi-eye" [outlined]="true" size="small" (onClick)="visualizarOrcamento(orcamento)" />
+        <p-button icon="pi pi-whatsapp" [outlined]="true" size="small" (onClick)="compartilharOrcamentoNoWhatsApp(orcamento)" ariaLabel="Compartilhar PDF pelo WhatsApp" />
         <p-button icon="pi pi-trash" severity="danger" [text]="true" size="small" (onClick)="deletarOrcamento(orcamento.id)" ariaLabel="Deletar orçamento" />
       </div>
     </article>
@@ -182,6 +183,15 @@
                 size="small"
                 (onClick)="visualizarOrcamento(orcamento)"
                 pTooltip="Visualizar">
+              </p-button>
+              <p-button
+                icon="pi pi-whatsapp"
+                [rounded]="true"
+                [text]="true"
+                severity="success"
+                size="small"
+                (onClick)="compartilharOrcamentoNoWhatsApp(orcamento)"
+                pTooltip="Preparar PDF para enviar pelo WhatsApp">
               </p-button>
               <p-button 
                 icon="pi pi-trash" 
