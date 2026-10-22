@@ -211,3 +211,94 @@ body .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link.p-menuitem
   .p-button { padding-inline: 0.8rem !important; }
 }
 
+
+
+/* Funilaria app-wide visual system */
+:root {
+  --primary-color: #087f5b;
+  --primary-light: #20a879;
+  --primary-dark: #066648;
+  --secondary-color: #2563eb;
+  --accent-color: #f4a340;
+  --success-color: #0b9468;
+  --warning-color: #d97706;
+  --danger-color: #dc4545;
+  --info-color: #2563eb;
+  --text-primary: #172b25;
+  --text-secondary: #66756e;
+  --text-muted: #87958e;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f7f5;
+  --bg-tertiary: #eaf0ec;
+  --border-color: #dce6df;
+  --border-light: #e8efea;
+  --shadow-sm: 0 2px 8px rgba(21, 55, 39, .045);
+  --shadow-md: 0 8px 22px rgba(21, 55, 39, .08);
+  --shadow-lg: 0 16px 40px rgba(21, 55, 39, .12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --transition-duration: .18s;
+}
+html, body { min-height: 100%; background: #f4f7f5 !important; }
+body { color: var(--text-primary); font-size: 15px; line-height: 1.55; }
+button, input, textarea, select { font: inherit; }
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid rgba(8, 127, 91, .32); outline-offset: 2px; }
+.p-component { font-family: inherit; }
+.p-card, .p-panel {
+  border: 1px solid #e3ebe5 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 3px 14px rgba(21, 55, 39, .045) !important;
+  overflow: hidden;
+}
+.p-card .p-card-body { padding: 1.25rem; }
+.p-panel .p-panel-header {
+  padding: 1.15rem 1.25rem !important;
+  font-size: 1rem;
+  font-weight: 750 !important;
+}
+.p-panel .p-panel-content { padding: 1.25rem !important; }
+.p-button {
+  border-radius: 11px !important;
+  min-height: 42px;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transition: background .18s ease, transform .18s ease, box-shadow .18s ease !important;
+}
+.p-button:not(.p-button-text):not(.p-button-outlined) {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+.p-button:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(8,127,91,.16) !important; }
+.p-inputtext, .p-inputnumber-input, .p-dropdown, .p-select, .p-multiselect, textarea {
+  border-radius: 11px !important;
+}
+.p-inputtext, .p-inputnumber-input, textarea { min-height: 44px; }
+.p-datatable { border-radius: 12px; overflow: hidden; }
+.p-datatable .p-datatable-thead > tr > th {
+  background: #edf4ef !important;
+  color: #365447 !important;
+  border-color: #e1eae3 !important;
+  font-size: .8rem;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+}
+.p-datatable .p-datatable-tbody > tr > td { border-color: #edf1ee !important; padding: .9rem .85rem !important; }
+.p-paginator { border: 0 !important; padding: .75rem .25rem !important; }
+.p-tag { border-radius: 999px !important; padding: .25rem .65rem !important; font-weight: 750 !important; }
+.p-toast { max-width: calc(100vw - 2rem); }
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+  .p-card .p-card-body { padding: 1rem; }
+  .p-panel .p-panel-header { padding: 1rem !important; }
+  .p-panel .p-panel-content { padding: 1rem !important; }
+  .p-datatable-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .p-datatable table { min-width: 700px; }
+  .p-paginator { flex-wrap: wrap; gap: .25rem; }
+  .p-toast { width: calc(100vw - 1.5rem) !important; left: .75rem !important; right: .75rem !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
