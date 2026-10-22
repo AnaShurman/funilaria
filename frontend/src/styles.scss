@@ -7,7 +7,7 @@
   --primary-dark: #1d4ed8;
   --secondary-color: #6366f1;
   --accent-color: #f59e0b;
-  --success-color: #10b981;
+  --success-color: #3b82f6;
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
   --info-color: #3b82f6;
@@ -215,32 +215,32 @@ body .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link.p-menuitem
 
 /* Funilaria app-wide visual system */
 :root {
-  --primary-color: #087f5b;
-  --primary-light: #20a879;
-  --primary-dark: #066648;
+  --primary-color: #2563eb;
+  --primary-light: #60a5fa;
+  --primary-dark: #1d4ed8;
   --secondary-color: #2563eb;
   --accent-color: #f4a340;
-  --success-color: #0b9468;
+  --success-color: #3b82f6;
   --warning-color: #d97706;
   --danger-color: #dc4545;
   --info-color: #2563eb;
-  --text-primary: #172b25;
-  --text-secondary: #66756e;
-  --text-muted: #87958e;
+  --text-primary: #172b4d;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
   --bg-primary: #ffffff;
-  --bg-secondary: #f4f7f5;
-  --bg-tertiary: #eaf0ec;
-  --border-color: #dce6df;
-  --border-light: #e8efea;
+  --bg-secondary: #eef4ff;
+  --bg-tertiary: #e2ebfb;
+  --border-color: #d7e2f3;
+  --border-light: #e5ecf8;
   --shadow-sm: 0 2px 8px rgba(37, 99, 235, .045);
-  --shadow-md: 0 8px 22px rgba(21, 55, 39, .08);
-  --shadow-lg: 0 16px 40px rgba(21, 55, 39, .12);
+  --shadow-md: 0 8px 22px rgba(37, 99, 235, .08);
+  --shadow-lg: 0 16px 40px rgba(37, 99, 235, .12);
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --transition-duration: .18s;
 }
-html, body { min-height: 100%; background: #f4f7f5 !important; }
+html, body { min-height: 100%; background: #eef4ff !important; }
 body { color: var(--text-primary); font-size: 15px; line-height: 1.55; }
 button, input, textarea, select { font: inherit; }
 button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
@@ -249,7 +249,7 @@ button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
 .p-card, .p-panel {
   border: 1px solid #d7e2f3 !important;
   border-radius: 18px !important;
-  box-shadow: 0 3px 14px rgba(21, 55, 39, .045) !important;
+  box-shadow: 0 3px 14px rgba(37, 99, 235, .045) !important;
   overflow: hidden;
 }
 .p-card .p-card-body { padding: 1.25rem; }

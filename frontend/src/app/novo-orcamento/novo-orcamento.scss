@@ -36,8 +36,8 @@
     
     // Success toast
     .p-toast-message-success {
-      background-color: #22c55e !important;
-      border: 1px solid #16a34a !important;
+      background-color: #3b82f6 !important;
+      border: 1px solid #2563eb !important;
       
       .p-toast-message-icon {
         color: #ffffff !important;
@@ -95,8 +95,8 @@
 .test-button-container {
   margin-bottom: 20px;
   padding: 15px;
-  background-color: #fff3cd;
-  border: 1px solid #ffc107;
+  background-color: #e8efff;
+  border: 1px solid #bfdbfe;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -544,14 +544,14 @@
 .form-field label { color: #334e42; font-weight: 700; font-size: .85rem; }
 .form-field input, .form-field textarea,
 .form-field ::ng-deep .p-inputnumber input {
-  border: 1px solid #dce6df !important;
+  border: 1px solid #d7e2f3 !important;
   border-radius: 10px !important;
   min-height: 46px;
   box-sizing: border-box;
 }
 .form-field input:focus, .form-field textarea:focus,
 .form-field ::ng-deep .p-inputnumber input:focus {
-  border-color: #087f5b !important;
+  border-color: #2563eb !important;
   box-shadow: 0 0 0 3px rgba(8,127,91,.1) !important;
 }
 .item-row {
@@ -571,9 +571,9 @@
   border: 1px solid #dbe9df;
   border-radius: 13px;
 }
-.total-row .total-value { color: #087f5b; }
+.total-row .total-value { color: #2563eb; }
 .valor-total-destaque {
-  background: linear-gradient(135deg, #087f5b 0%, #075b42 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #075b42 100%);
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(8,127,91,.2);
   text-align: left;
