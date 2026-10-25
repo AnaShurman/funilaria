@@ -345,3 +345,15 @@
   .desktop-quotes { display: none !important; }
 }
 @media (max-width: 390px) { .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+
+/* WhatsApp brand styling */
+:host ::ng-deep .whatsapp-button {
+  background: #25D366 !important;
+  border-color: #25D366 !important;
+  color: #fff !important;
+}
+:host ::ng-deep .whatsapp-button:hover {
+  background: #1DA851 !important;
+  border-color: #1DA851 !important;
+}
