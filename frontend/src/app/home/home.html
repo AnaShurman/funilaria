@@ -107,12 +107,14 @@
         <strong>{{ formatarMoeda(orcamento.valor_total) }}</strong>
       </div>
       <div class="mobile-quote-actions">
-        <p-button label="Visualizar" [outlined]="true" size="small" (onClick)="visualizarOrcamento(orcamento)" />
-        <p-button label="Editar" [outlined]="true" size="small" (onClick)="editarOrcamento(orcamento)" />
-        <p-button label="WhatsApp" icon="pi pi-whatsapp" styleClass="whatsapp-button" size="small" (onClick)="compartilharOrcamentoNoWhatsApp(orcamento)" />
-        <details class="quote-more-actions">
-          <summary>Mais ações</summary>
-          <button type="button" class="quote-delete-action" (click)="deletarOrcamento(orcamento.id)">Excluir orçamento</button>
+        <details class="quote-actions-menu">
+          <summary aria-label="Ações do orçamento" title="Ações"><i class="pi pi-ellipsis-h"></i></summary>
+          <div class="quote-actions-dropdown">
+            <button type="button" (click)="visualizarOrcamento(orcamento)"><i class="pi pi-eye"></i> Visualizar</button>
+            <button type="button" (click)="editarOrcamento(orcamento)"><i class="pi pi-pencil"></i> Editar</button>
+            <button type="button" class="quote-whatsapp-action" (click)="compartilharOrcamentoNoWhatsApp(orcamento)"><i class="pi pi-whatsapp"></i> WhatsApp</button>
+            <button type="button" class="quote-delete-action" (click)="deletarOrcamento(orcamento.id)"><i class="pi pi-trash"></i> Excluir orçamento</button>
+          </div>
         </details>
       </div>
     </article>
@@ -179,12 +181,14 @@
           <td>{{ formatarData(orcamento.created_at) }}</td>
           <td>
             <div class="action-buttons">
-              <p-button label="Visualizar" [outlined]="true" size="small" (onClick)="visualizarOrcamento(orcamento)" />
-              <p-button label="Editar" [outlined]="true" size="small" (onClick)="editarOrcamento(orcamento)" />
-              <p-button label="WhatsApp" icon="pi pi-whatsapp" styleClass="whatsapp-button" size="small" (onClick)="compartilharOrcamentoNoWhatsApp(orcamento)" />
-              <details class="quote-more-actions">
-                <summary>Mais ações</summary>
-                <button type="button" class="quote-delete-action" (click)="deletarOrcamento(orcamento.id)">Excluir orçamento</button>
+              <details class="quote-actions-menu">
+                <summary aria-label="Ações do orçamento" title="Ações"><i class="pi pi-ellipsis-h"></i></summary>
+                <div class="quote-actions-dropdown">
+                  <button type="button" (click)="visualizarOrcamento(orcamento)"><i class="pi pi-eye"></i> Visualizar</button>
+                  <button type="button" (click)="editarOrcamento(orcamento)"><i class="pi pi-pencil"></i> Editar</button>
+                  <button type="button" class="quote-whatsapp-action" (click)="compartilharOrcamentoNoWhatsApp(orcamento)"><i class="pi pi-whatsapp"></i> WhatsApp</button>
+                  <button type="button" class="quote-delete-action" (click)="deletarOrcamento(orcamento.id)"><i class="pi pi-trash"></i> Excluir orçamento</button>
+                </div>
               </details>
             </div>
           </td>
