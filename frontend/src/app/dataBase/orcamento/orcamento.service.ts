@@ -188,6 +188,56 @@ export class OrcamentoService {
     };
   }
 
+  /** Update an existing budget and replace its materials and services. */
+  async atualizarOrcamento(id: string, dados: OrcamentoData): Promise<void> {
+    const { error: updateError } = await this.supabase.client
+      .from('orcamentos')
+      .update({
+        cliente_nome: dados.clienteNome,
+        cliente_telefone: dados.clienteTelefone?.trim() || null,
+        cliente_email: dados.clienteEmail || null,
+        veiculo_modelo: dados.veiculoModelo?.trim() || null,
+        veiculo_placa: dados.veiculoPlaca?.trim() || null,
+        veiculo_ano: dados.veiculoAno?.trim() || null,
+        mao_de_obra: dados.maoDeObra || 0,
+        total_materiais: dados.totalMateriais,
+        total_servicos: dados.totalServicos,
+        valor_total: dados.valorTotal,
+        observacoes: dados.observacoes || null
+      })
+      .eq('id', id);
+    if (updateError) throw updateError;
+
+    const { error: materiaisDeleteError } = await this.supabase.client
+      .from('orcamento_materiais').delete().eq('orcamento_id', id);
+    if (materiaisDeleteError) throw materiaisDeleteError;
+
+    const { error: servicosDeleteError } = await this.supabase.client
+      .from('orcamento_servicos').delete().eq('orcamento_id', id);
+    if (servicosDeleteError) throw servicosDeleteError;
+
+    const materiais = (dados.materiais || [])
+      .filter(item => item.descricao?.trim())
+      .map(item => ({
+        orcamento_id: id,
+        descricao: item.descricao.trim(),
+        quantidade: item.quantidade || 1,
+        valor_unitario: item.valorUnitario || 0
+      }));
+    if (materiais.length) {
+      const { error } = await this.supabase.client.from('orcamento_materiais').insert(materiais as any);
+      if (error) throw error;
+    }
+
+    const servicos = (dados.servicos || [])
+      .filter(item => item.descricao?.trim())
+      .map(item => ({ orcamento_id: id, descricao: item.descricao.trim(), valor: item.valor || 0 }));
+    if (servicos.length) {
+      const { error } = await this.supabase.client.from('orcamento_servicos').insert(servicos);
+      if (error) throw error;
+    }
+  }
+
   /**
    * Update budget status
    */
