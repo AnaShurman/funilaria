@@ -359,52 +359,73 @@
 }
 
 
-/* Clean, readable quote actions on desktop and mobile */
+/* Compact three-dot action menu for quote rows and mobile cards */
 .action-buttons, .mobile-quote-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: .45rem;
+  justify-content: center;
 }
-.action-buttons { min-width: 320px; }
-.action-buttons ::ng-deep .p-button,
-.mobile-quote-actions ::ng-deep .p-button {
-  border-radius: 9px !important;
-  white-space: nowrap;
-}
-.quote-more-actions { position: relative; display: inline-block; }
-.quote-more-actions summary {
+.action-buttons { min-width: 72px; }
+.quote-actions-menu { position: relative; display: inline-block; }
+.quote-actions-menu summary {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
   cursor: pointer;
   list-style: none;
-  border: 1px solid var(--border-light);
-  border-radius: 9px;
-  padding: .48rem .65rem;
-  color: var(--text-secondary);
-  font-size: .8rem;
-  white-space: nowrap;
-  background: var(--bg-primary);
+  border: 1px solid #dbe4ef;
+  border-radius: 11px;
+  color: #49617e;
+  background: #fff;
+  font-size: 1.1rem;
+  transition: background .15s ease, border-color .15s ease;
 }
-.quote-more-actions summary::-webkit-details-marker { display: none; }
-.quote-more-actions summary::after { content: ' ▾'; }
-.quote-delete-action {
+.quote-actions-menu summary:hover,
+.quote-actions-menu[open] summary {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+.quote-actions-menu summary::-webkit-details-marker { display: none; }
+.quote-actions-dropdown {
   position: absolute;
+  top: calc(100% + .35rem);
   right: 0;
-  top: calc(100% + .3rem);
-  z-index: 20;
-  padding: .65rem .8rem;
-  min-width: 150px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  min-width: 190px;
+  padding: .4rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, .14);
+}
+.quote-actions-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  width: 100%;
+  padding: .7rem .75rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  font-size: .875rem;
   text-align: left;
   white-space: nowrap;
-  border: 1px solid var(--border-light);
-  border-radius: 9px;
-  background: var(--bg-primary);
-  color: var(--danger-color);
-  box-shadow: var(--shadow-md);
   cursor: pointer;
 }
+.quote-actions-dropdown button:hover { background: #f1f5f9; }
+.quote-actions-dropdown button i { width: 1rem; text-align: center; color: #64748b; }
+.quote-actions-dropdown .quote-whatsapp-action { color: #16803d; }
+.quote-actions-dropdown .quote-whatsapp-action i { color: #25D366; }
+.quote-actions-dropdown .quote-delete-action { color: #dc2626; }
+.quote-actions-dropdown .quote-delete-action i { color: #dc2626; }
 @media (max-width: 768px) {
-  .mobile-quote-actions { gap: .4rem; }
-  .mobile-quote-actions ::ng-deep .p-button { padding: .55rem .65rem; }
+  .mobile-quote-actions { justify-content: flex-end; margin-top: .5rem; }
   .action-buttons { min-width: 0; }
 }
