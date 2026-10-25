@@ -156,7 +156,6 @@ export class Home implements OnInit {
     if (!data) return '-';
     return new Date(data).toLocaleDateString('pt-BR');
   }
-  }
 
   async visualizarOrcamento(orcamento: any) {
     try {
