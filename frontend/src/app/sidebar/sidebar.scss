@@ -31,7 +31,7 @@
   border: 0;
   background: rgba(15, 23, 42, 0.55);
   backdrop-filter: blur(2px);
-  z-index: 999;
+  z-index: 1150;
   cursor: pointer;
   animation: fadeIn 0.2s ease;
 }
@@ -40,7 +40,7 @@
 .sidebar {
   width: 260px; height: 100vh; height: 100dvh; background: var(--bg-primary);
   border-right: 1px solid var(--border-light); display: flex; flex-direction: column;
-  position: fixed; left: 0; top: 0; z-index: 1000; box-shadow: var(--shadow-md);
+  position: fixed; left: 0; top: 0; z-index: 1200; box-shadow: var(--shadow-md);
   transition: transform 0.25s ease;
 }
 .sidebar-header {
@@ -57,7 +57,7 @@
     cursor: pointer; padding: 0.5rem; border-radius: 8px; min-width: 44px; min-height: 44px;
     transition: all var(--transition-duration) ease;
     i { font-size: 1.5rem; }
-    &:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+
   }
 }
 .sidebar-nav {
@@ -160,4 +160,20 @@
   height: 2rem;
   flex: 0 0 auto;
   display: block;
+}
+
+
+/* Prevent the fixed menu toggle from covering the sidebar header while open. */
+@media (max-width: 768px) {
+  .sidebar { z-index: 1200; }
+  .sidebar-overlay { z-index: 1150; }
+  .menu-toggle { z-index: 1100; }
+}
+
+/* Hover styling only on devices that actually support hover; mobile taps should not leave a second item highlighted. */
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-nav .nav-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
 }
