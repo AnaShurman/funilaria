@@ -21,19 +21,7 @@
           <span class="stat-value">{{ totalOrcamentos }}</span>
         </div>
       </div>
-    </p-card>
-
-    <p-card>
-      <div class="stat-card">
-        <i class="pi pi-clock stat-icon warning"></i>
-        <div class="stat-content">
-          <span class="stat-label">Pendentes</span>
-          <span class="stat-value">{{ orcamentosPendentes }}</span>
-        </div>
-      </div>
-    </p-card>
-
-    <p-card>
+    </p-card><p-card>
       <div class="stat-card">
         <i class="pi pi-dollar stat-icon success"></i>
         <div class="stat-content">
@@ -98,7 +86,6 @@
     <article class="mobile-quote-card" *ngFor="let orcamento of orcamentos">
       <div class="mobile-quote-topline">
         <strong>#{{ orcamento.numero_orcamento }}</strong>
-        <p-tag [value]="getStatusLabel(orcamento.status)" [severity]="getSeverity(orcamento.status)" />
       </div>
       <h3>{{ orcamento.cliente_nome || 'Cliente não informado' }}</h3>
       <p class="mobile-quote-vehicle">{{ orcamento.veiculo_modelo || 'Veículo não informado' }}<span *ngIf="orcamento.veiculo_placa"> · {{ orcamento.veiculo_placa }}</span></p>
@@ -150,9 +137,6 @@
           <th pSortableColumn="valor_total">
             Valor Total <p-sortIcon field="valor_total"></p-sortIcon>
           </th>
-          <th pSortableColumn="status">
-            Status <p-sortIcon field="status"></p-sortIcon>
-          </th>
           <th pSortableColumn="created_at">
             Data <p-sortIcon field="created_at"></p-sortIcon>
           </th>
@@ -172,12 +156,6 @@
             <small class="text-muted">{{ orcamento.veiculo_placa }}</small>
           </td>
           <td><strong>{{ formatarMoeda(orcamento.valor_total) }}</strong></td>
-          <td>
-            <p-tag 
-              [value]="getStatusLabel(orcamento.status)" 
-              [severity]="getSeverity(orcamento.status)">
-            </p-tag>
-          </td>
           <td>{{ formatarData(orcamento.created_at) }}</td>
           <td>
             <div class="action-buttons">
@@ -197,7 +175,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7" class="empty-message">
+          <td colspan="6" class="empty-message">
             <div class="empty-state">
               <i class="pi pi-inbox"></i>
               <h3>Nenhum orçamento encontrado</h3>
