@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PanelModule } from 'primeng/panel';
@@ -32,18 +33,61 @@ export class NovoOrcamento implements OnInit {
   logoUrl: string | null = null;
   oficinaInfo: any = null;
   isLoading: boolean = false;
+  orcamentoId: string | null = null;
+  modoEdicao = false;
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private pdfService: PdfService,
     private perfilService: PerfilService,
-    private orcamentoService: OrcamentoService
+    private orcamentoService: OrcamentoService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.initForm();
     await this.loadOficinaInfo();
+    this.orcamentoId = this.route.snapshot.queryParamMap.get('id');
+    this.modoEdicao = !!this.orcamentoId;
+    if (this.orcamentoId) await this.carregarParaEdicao(this.orcamentoId);
+  }
+
+  async carregarParaEdicao(id: string): Promise<void> {
+    this.isLoading = true;
+    try {
+      const item = await this.orcamentoService.obterOrcamento(id);
+      this.orcamentoForm.patchValue({
+        clienteNome: item.cliente_nome || '',
+        clienteTelefone: item.cliente_telefone || '',
+        clienteEmail: item.cliente_email || '',
+        veiculoModelo: item.veiculo_modelo || '',
+        veiculoPlaca: item.veiculo_placa || '',
+        veiculoAno: item.veiculo_ano || '',
+        maoDeObra: item.mao_de_obra ?? 0,
+        observacoes: item.observacoes || ''
+      });
+      this.materiais.clear();
+      (item.materiais || []).forEach((material: any) => this.materiais.push(this.fb.group({
+        descricao: [material.descricao || ''],
+        quantidade: [material.quantidade ?? 1, [Validators.min(1)]],
+        valorUnitario: [material.valor_unitario ?? material.valorUnitario ?? 0, [Validators.min(0)]]
+      })));
+      if (!this.materiais.length) this.addMaterial();
+      this.servicos.clear();
+      (item.servicos || []).forEach((servico: any) => this.servicos.push(this.fb.group({
+        descricao: [servico.descricao || ''],
+        valor: [servico.valor ?? 0, [Validators.min(0)]]
+      })));
+      if (!this.servicos.length) this.addServico();
+    } catch (error) {
+      console.error('Erro ao carregar orçamento para edição:', error);
+      this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível carregar o orçamento para edição.' });
+      this.router.navigate(['/']);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   async loadOficinaInfo(): Promise<void> {
@@ -171,7 +215,9 @@ export class NovoOrcamento implements OnInit {
 
         // Save to database first
         console.log('💾 Salvando no banco de dados...');
-        const orcamentoSalvo = await this.orcamentoService.salvarOrcamento(dadosOrcamento);
+        const orcamentoSalvo = this.modoEdicao && this.orcamentoId
+          ? (await this.orcamentoService.atualizarOrcamento(this.orcamentoId, dadosOrcamento), { numero_orcamento: this.orcamentoId })
+          : await this.orcamentoService.salvarOrcamento(dadosOrcamento);
         console.log('✅ Orçamento salvo no banco:', orcamentoSalvo);
         
         // Add the generated budget number to the data
@@ -189,9 +235,14 @@ export class NovoOrcamento implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: `Orçamento ${orcamentoSalvo.numero_orcamento} salvo e PDF gerado com sucesso!`,
+          detail: this.modoEdicao ? 'Orçamento atualizado com sucesso!' : `Orçamento ${orcamentoSalvo.numero_orcamento} salvo e PDF gerado com sucesso!`,
           life: 3000
         });
+
+        if (this.modoEdicao) {
+          this.router.navigate(['/']);
+          return;
+        }
 
         // Clear form after success
         this.orcamentoForm.reset();
