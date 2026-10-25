@@ -320,6 +320,10 @@ export class Home implements OnInit {
     }
   }
 
+  editarOrcamento(orcamento: any): void {
+    this.router.navigate(['/novoOrcamento'], { queryParams: { id: orcamento.id } });
+  }
+
   novoOrcamento() {
     this.router.navigate(['/novoOrcamento']);
   }
