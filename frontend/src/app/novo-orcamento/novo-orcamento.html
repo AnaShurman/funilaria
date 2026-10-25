@@ -1,6 +1,6 @@
 <div class="orcamento-container">
   <p-toast />
-  <p-panel header="Novo Orçamento">
+  <p-panel [header]="modoEdicao ? 'Editar Orçamento' : 'Novo Orçamento'">
     <div class="test-button-container">
       <p-button
         label="Preencher Dados de Teste"
@@ -268,8 +268,8 @@
           (onClick)="onCancel()">
         </p-button>
         <p-button
-          [label]="isLoading ? 'Processando...' : 'Gerar Orçamento PDF'"
-          [icon]="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-file-pdf'"
+          [label]="isLoading ? 'Processando...' : (modoEdicao ? 'Salvar Alterações' : 'Gerar Orçamento PDF')"
+          [icon]="isLoading ? 'pi pi-spin pi-spinner' : (modoEdicao ? 'pi pi-save' : 'pi pi-file-pdf')"
           type="submit"
           [loading]="isLoading"
           [disabled]="orcamentoForm.invalid || isLoading">

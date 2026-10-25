@@ -69,7 +69,7 @@
     i { font-size: 1.25rem; width: 24px; text-align: center; }
     &:hover { background: var(--bg-tertiary); color: var(--text-primary); }
     &.active {
-      background: rgba(16, 185, 129, 0.1); color: var(--primary-color);
+      background: rgba(37, 99, 235, 0.1); color: var(--primary-color);
       border-left-color: var(--primary-color); font-weight: 600;
       i { color: var(--primary-color); }
     }
@@ -134,7 +134,7 @@
   }
 
   .sidebar-header .logo { gap: 0.65rem; }
-  .sidebar-header .logo i { font-size: 1.8rem; }
+  .sidebar-header .logo i, .sidebar-header .logo .brand-car-icon { font-size: 1.8rem; width: 1.8rem; height: 1.8rem; flex: 0 0 auto; }
 
   .sidebar-nav { padding: 0.75rem 0; }
   .sidebar-nav .nav-item {
@@ -145,10 +145,19 @@
   }
 
   .sidebar-nav .nav-item.active {
-    background: rgba(16, 185, 129, 0.13);
+    background: rgba(37, 99, 235, 0.1);
   }
 
   .sidebar-footer { padding: 0.85rem; }
   .sidebar-footer .logout-button { border-radius: 10px; }
 }
 
+
+
+/* Use a crisp vector car mark instead of a font glyph that can render incorrectly. */
+.sidebar-header .logo .brand-car-icon {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  display: block;
+}
