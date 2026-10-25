@@ -33,7 +33,6 @@ export class Home implements OnInit {
   loading: boolean = true;
   totalOrcamentos: number = 0;
   valorTotalGeral: number = 0;
-  orcamentosPendentes: number = 0;
   
   // Métricas mensais
   orcamentosMesAtual: number = 0;
@@ -90,7 +89,6 @@ export class Home implements OnInit {
   calcularEstatisticas() {
     this.totalOrcamentos = this.orcamentos.length;
     this.valorTotalGeral = this.orcamentos.reduce((sum, orc) => sum + (orc.valor_total || 0), 0);
-    this.orcamentosPendentes = this.orcamentos.filter(orc => orc.status === 'pendente').length;
     
     // Calcular métricas mensais
     const agora = new Date();
@@ -158,31 +156,6 @@ export class Home implements OnInit {
     if (!data) return '-';
     return new Date(data).toLocaleDateString('pt-BR');
   }
-
-  getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | null | undefined {
-    switch (status) {
-      case 'pendente':
-        return 'warn';
-      case 'aprovado':
-        return 'success';
-      case 'rejeitado':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-  getStatusLabel(status: string): string {
-    switch (status) {
-      case 'pendente':
-        return 'Pendente';
-      case 'aprovado':
-        return 'Aprovado';
-      case 'rejeitado':
-        return 'Rejeitado';
-      default:
-        return status;
-    }
   }
 
   async visualizarOrcamento(orcamento: any) {
