@@ -161,3 +161,17 @@
   flex: 0 0 auto;
   display: block;
 }
+
+
+/* When the drawer is open, use its own close button instead of covering the brand with the floating toggle. */
+@media (max-width: 768px) {
+  .menu-toggle.open { display: none !important; }
+}
+
+/* Avoid sticky hover backgrounds after taps on touchscreens. */
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-nav .nav-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
